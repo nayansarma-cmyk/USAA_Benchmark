@@ -23,7 +23,10 @@ if ($staged) { & $git commit -m $Message | Out-Null; Write-Host "Committed: $Mes
 
 # Reconcile with commits already on the remote (e.g. a README created on GitHub), then push.
 & $git fetch origin 2>&1 | Out-Null
-if ($LASTEXITCODE -eq 0 -and (& $git branch -r) -match "origin/main") {
+# A rebase folder left behind (OneDrive can keep it locked) makes git think a rebase is running; remove it if none is.
+if ((Test-Path .git\rebase-merge) -and -not ((& $git status) -match "rebase in progress")) { Remove-Item .git\rebase-merge -Recurse -Force -ErrorAction SilentlyContinue }
+$behind = if ((& $git branch -r) -match "origin/main") { [int](& $git rev-list --count HEAD..origin/main) } else { 0 }
+if ($behind -gt 0) {
     # --autostash: files being written by a running benchmark must not block the rebase
     & $git pull --rebase --autostash origin main --allow-unrelated-histories
     if ($LASTEXITCODE -ne 0) { throw "Rebase hit a conflict. Resolve it (git status), run 'git rebase --continue', then re-run." }
