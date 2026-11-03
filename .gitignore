@@ -1,0 +1,27 @@
+# Secrets - never commit
+.env
+.env.*
+*.key
+*.pem
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Large / regenerable / demo-only artefacts
+results/cache/
+results/*_mock.*
+results/errors*.jsonl
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# JavaScript deps (not part of this project)
+node_modules/
+package-lock.json
+
