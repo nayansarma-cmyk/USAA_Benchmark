@@ -24,7 +24,8 @@ if ($staged) { & $git commit -m $Message | Out-Null; Write-Host "Committed: $Mes
 # Reconcile with commits already on the remote (e.g. a README created on GitHub), then push.
 & $git fetch origin 2>&1 | Out-Null
 if ($LASTEXITCODE -eq 0 -and (& $git branch -r) -match "origin/main") {
-    & $git pull --rebase origin main --allow-unrelated-histories
+    # --autostash: files being written by a running benchmark must not block the rebase
+    & $git pull --rebase --autostash origin main --allow-unrelated-histories
     if ($LASTEXITCODE -ne 0) { throw "Rebase hit a conflict. Resolve it (git status), run 'git rebase --continue', then re-run." }
 }
 & $git push -u origin main
