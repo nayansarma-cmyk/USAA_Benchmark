@@ -236,8 +236,108 @@ def summary_markdown(methods, names, comps, n_cases, headline_text):
     return "\n".join(L) + "\n"
 
 
+# ------------------------------------------------------------------ review table (all cases)
+import re
+from . import rules
+
+OK_MARK, MISS_MARK, FALSE_MARK, MIX_MARK = "✓", "✗", "⚠", "~"
+_SEC = re.compile(r"(\d+\.\d+)")
+
+
+def _where(case, loc):
+    """('Declarations · Collision Deductible' | 'Section 3.1 · Duties After an Accident or Loss')"""
+    if loc in case["labels"]:
+        return f"Declarations · {loc}"
+    m = _SEC.search(str(loc))
+    if not m:
+        return str(loc)
+    sid = m.group(1)
+    _, ca = rules.parse(case["text_a"])
+    _, cb = rules.parse(case["text_b"])
+    title = (ca.get(sid) or cb.get(sid) or ["", ""])[0]
+    return f"Section {sid}" + (f" · {title}" if title else "")
+
+
+def excerpt(case, loc):
+    """(heading, original text, renewal text) for a Declarations field or policy section."""
+    fa, ca = rules.parse(case["text_a"])
+    fb, cb = rules.parse(case["text_b"])
+    if loc in case["labels"]:
+        return f"Declarations field: {loc}", fa.get(loc, "(not present)"), fb.get(loc, "(not present)")
+    m = _SEC.search(str(loc))
+    sid = m.group(1) if m else None
+    if sid and (sid in ca or sid in cb):
+        return (_where(case, loc), ca[sid][1] if sid in ca else "(section not in the original)",
+                cb[sid][1] if sid in cb else "(section deleted in the renewal)")
+    return str(loc), "(no matching text)", "(no matching text)"
+
+
+def _explain_outcome(kind, outcome, tier, is_rules):
+    if outcome == "Found":
+        return "Correctly flagged a real change."
+    if outcome == "Correctly ignored":
+        return "Correctly ignored a harmless edit." if kind == "cosmetic" else "Correctly left alone."
+    if outcome == "Missed":
+        base = "A real change was not flagged."
+        if tier == "semantic":
+            return base + (" It changes the meaning without a new number or legal keyword, which fixed rules cannot see." if is_rules
+                           else " It changes the meaning with no obvious number or keyword to spot.")
+        if tier == "lexical":
+            return base + " It hinges on a number or a legal keyword."
+        return base
+    if outcome == "Wrongly flagged":
+        return ("Flagged a harmless edit (rewording or formatting only)." if kind == "cosmetic"
+                else "Flagged something that is not a change in the answer key.")
+    return "The answer changed between attempts: sometimes right, sometimes wrong."
+
+
+def review_table(rows, cases, probe="none", level="final", names=None):
+    """One row per (case, item, method). AI methods are aggregated over attempts.
+    Columns: Case, Where, Difficulty, Original wording, Renewal wording, Method, Result, Why, What the method said,
+    plus helper columns prefixed '_' (case id, location, right/wrong)."""
+    sel = [r for r in pick_level(rows, level) if r["probe"] == probe]
+    by = defaultdict(list)
+    for r in sel:
+        by[(r["case"], r["arm"], r["verifier"])].append(r)
+    out = []
+    for (cid, arm, ver), rs in sorted(by.items(), key=lambda kv: (int(kv[0][0].split("_")[1]), kv[0][1])):
+        case, labels, n = cases[cid], cases[cid]["labels"], len(rs)
+        is_rules = not is_ai(arm)
+        preds = [{score.canon(c.get("location", ""), labels): c for c in r["pred"]} for r in rs]
+        method = (names or {}).get((arm, ver)) or pretty_arm(arm)
+        key_canon = set()
+
+        def add(loc, tier, kind, expected, old, new, canon_key):
+            hits = sum(canon_key in P for P in preds)
+            if expected:
+                outcome = "Found" if hits == n else "Missed" if hits == 0 else "Inconsistent"
+            else:
+                outcome = "Correctly ignored" if hits == 0 else "Wrongly flagged" if hits == n else "Inconsistent"
+            right = outcome in ("Found", "Correctly ignored")
+            mark = {"Found": OK_MARK, "Correctly ignored": OK_MARK, "Missed": MISS_MARK,
+                    "Wrongly flagged": FALSE_MARK, "Inconsistent": MIX_MARK}[outcome]
+            label = f"{mark} {outcome}" + (f" ({hits} of {n} attempts)" if n > 1 and outcome == "Inconsistent" else "")
+            said = next((P[canon_key].get("description", "") for P in preds if canon_key in P and P[canon_key].get("description")), "")
+            out.append({"Case": f"Case {cid.split('_')[1]}", "Where": _where(case, loc),
+                        "Difficulty": TIER_SHORT.get(tier, tier) if tier else "—",
+                        "Original wording": old, "Renewal wording": new, "Method": method, "Result": label,
+                        "Why": _explain_outcome(kind, outcome, tier, is_rules), "What the method said": said,
+                        "_case": cid, "_loc": loc, "_right": right, "_outcome": outcome, "_method": method})
+        for e in case["key"]:
+            c = score.canon(e["location"], labels)
+            key_canon.add(c)
+            add(e["location"], e["tier"], "cosmetic" if not e["expected"] else "real", e["expected"], e["old"], e["new"], c)
+        seen = {}
+        for P in preds:
+            for c, item in P.items():
+                if c not in key_canon:
+                    seen.setdefault(c, item.get("location", ""))
+        for c, loc in seen.items():
+            add(loc, None, "extra", False, "—", "—", c)
+    return out
+
+
 # ------------------------------------------------------------------ side-by-side
-OK_MARK, MISS_MARK, FALSE_MARK = "✓", "✗", "⚠"
 
 
 def side_by_side(rows, case, probe, methods, run_id=0, every=False, detail=False, only_issues=False):

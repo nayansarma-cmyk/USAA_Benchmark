@@ -117,6 +117,34 @@ def test_summary_and_neutral_verdicts():
     assert len(cols) == 2 and tbl[-1]["Item"] == "SCORE: Overall score"
 
 
+def test_review_table_identifies_case_where_and_why():
+    from src import viewmodel as vm
+    with tempfile.TemporaryDirectory() as d:
+        old = config.RESULTS
+        config.RESULTS = Path(d)
+        try:
+            r = run.execute(["A_rules", "B_llm"], ["none"], 3, 4, 1, mock=True, judge_models=["claude-sonnet-5-5"])
+            rows, cases = vm.load_scored(r["path"])
+        finally:
+            config.RESULTS = old
+    t = vm.review_table(rows, cases)
+    assert t and all(x["Case"].startswith("Case ") and x["Where"] and x["Why"] and x["Method"] for x in t)
+    # every answer-key item appears once per method per case
+    n_items = sum(len(cases[c]["key"]) for c in {x["_case"] for x in t})
+    rules_rows = [x for x in t if x["Method"] == "Rules only" and x["_case"] in cases and x["Difficulty"] != "—"]
+    assert len(rules_rows) >= n_items
+    # wherever the rules missed a semantic change, the explanation says why in plain terms
+    miss = [x for x in t if x["Method"] == "Rules only" and x["_outcome"] == "Missed" and x["Difficulty"] == "hard"]
+    assert miss and all("meaning" in x["Why"] for x in miss)
+    # AI aggregated over 3 attempts: outcomes are one of the known labels
+    assert {x["_outcome"] for x in t} <= {"Found", "Missed", "Wrongly flagged", "Correctly ignored", "Inconsistent"}
+    # excerpt shows the actual policy text for a declarations field and for a section
+    c0 = next(iter(cases.values()))
+    assert vm.excerpt(c0, "Collision Deductible")[1].startswith("$")
+    h, o, n = vm.excerpt(c0, "3.1")
+    assert h.startswith("Section 3.1") and "notify" in o.lower()
+
+
 def test_no_rules_baseline_is_handled():
     from src import viewmodel as vm
     ms = [dict(key=("B_llm @ x", "-"), arm="B_llm @ x", found=.9, correct=.8)]

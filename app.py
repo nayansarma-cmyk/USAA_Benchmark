@@ -96,7 +96,7 @@ def mark_color(v):
     v = str(v)
     return (f"color: {GOOD}; font-weight: 600" if v.startswith(vm.OK_MARK) else
             f"color: {BAD}; font-weight: 600" if v.startswith(vm.MISS_MARK) else
-            f"color: {WARN}; font-weight: 600" if v.startswith(vm.FALSE_MARK) else "")
+            f"color: {WARN}; font-weight: 600" if v.startswith((vm.FALSE_MARK, vm.MIX_MARK)) else "")
 
 
 def pct_col(label, help=None):
@@ -153,8 +153,8 @@ else:
 st.title("Policy change benchmark", icon=":material/fact_check:")
 st.caption("How do AI models compare with fixed rules at spotting meaningful changes between two versions of a car insurance policy?")
 
-tab_sum, tab_run, tab_cases, tab_help = st.tabs([
-    ":material/dashboard: Summary", ":material/play_arrow: Run a test",
+tab_sum, tab_run, tab_review, tab_cases, tab_help = st.tabs([
+    ":material/dashboard: Summary", ":material/play_arrow: Run a test", ":material/fact_check: Review table",
     ":material/compare: Case explorer", ":material/help: How it works"])
 
 # ============================================================ RUN
@@ -420,6 +420,100 @@ with tab_sum:
                     with st.expander(title):
                         st.dataframe(df, hide_index=True, width="stretch")
                 st.download_button("Download full report (markdown)", md, file_name="report.md", icon=":material/download:")
+
+# ============================================================ REVIEW TABLE
+@st.cache_resource(show_spinner=False)
+def get_review(path, mtime, probe, level):
+    rows, cases = load_rows(path, mtime)
+    methods = vm.summarize(rows, probe, level)
+    names = vm.unique_names(methods)
+    return pd.DataFrame(vm.review_table(rows, cases, probe, level, names)), [names[m["key"]] for m in methods], cases
+
+
+with tab_review:
+    if not has_results(mock):
+        st.info("No results yet. Run a test first, then review every case here.", icon=":material/info:")
+    else:
+        f = runs_file(mock)
+        path, mtime = str(f), f.stat().st_mtime
+        rows, _ = load_rows(path, mtime)
+        st.caption("Every item in every case study, for every method: where it is in the policy, what changed, "
+                   "what the method did, and why that was right or wrong. Select a row to see the actual policy text.")
+        probe_ids = sorted({r["probe"] for r in rows}, key=lambda p: probes.PROBES.index(p) if p in probes.PROBES else 99)
+        k1, k2 = st.columns(2)
+        rprobe = "none" if "none" in probe_ids else probe_ids[0]
+        if len(probe_ids) > 1:
+            rprobe = k1.selectbox("Condition", probe_ids, index=probe_ids.index(rprobe), format_func=lambda p: vm.PROBE_NAMES.get(p, p), key="rv_probe")
+        rlevel = "final"
+        if any(r["level"] > 0 for r in rows):
+            rlevel = k2.segmented_control("Which AI answer", ["final", "first"], default="final", required=True, key="rv_level",
+                                          format_func=lambda v: "After double-checking" if v == "final" else "First answer only")
+        full, method_names, cases_all = get_review(path, mtime, rprobe, rlevel)
+        if full.empty:
+            st.info("No results for this condition yet.", icon=":material/info:")
+        else:
+            f1c, f2c = st.columns([3, 2])
+            pick_methods = f1c.pills("Methods", method_names, selection_mode="multi", default=method_names, key="rv_methods")
+            case_labels = sorted(full["Case"].unique(), key=lambda c: int(c.split()[1]))
+            pick_cases = f2c.multiselect("Case studies", case_labels, default=case_labels, key="rv_cases")
+            g1, g2 = st.columns([3, 2])
+            diffs = sorted(full["Difficulty"].unique())
+            pick_diff = g1.pills("Type of item", diffs, selection_mode="multi", default=diffs, key="rv_diff",
+                                 help="easy / medium / hard = real changes; 'harmless edit' = rewording or formatting that should be ignored.")
+            show = g2.segmented_control("Show", ["Mistakes only", "Everything", "Correct only"], default="Mistakes only", required=True, key="rv_show")
+
+            df = full[full["Method"].isin(pick_methods or []) & full["Case"].isin(pick_cases or []) & full["Difficulty"].isin(pick_diff or [])]
+            if show == "Mistakes only":
+                df = df[~df["_right"]]
+            elif show == "Correct only":
+                df = df[df["_right"]]
+            scope = full[full["Method"].isin(pick_methods or []) & full["Case"].isin(pick_cases or []) & full["Difficulty"].isin(pick_diff or [])]
+            m1, m2, m3, m4 = st.columns(4)
+            m1.metric("Items reviewed", len(scope), border=True)
+            m2.metric("Correct", int(scope["_right"].sum()), border=True)
+            m3.metric("Mistakes", int((~scope["_right"]).sum()), border=True)
+            m4.metric("Cases covered", scope["Case"].nunique(), border=True)
+
+            with st.expander("Summary of mistakes", icon=":material/bar_chart:"):
+                if len(scope):
+                    kinds = scope.assign(**{k: (scope["_outcome"] == k) for k in ["Missed", "Wrongly flagged", "Inconsistent"]})
+                    by_m = kinds.groupby("Method").agg(Correct=("_right", "sum"), Missed=("Missed", "sum"),
+                                                       **{"Wrongly flagged": ("Wrongly flagged", "sum"), "Inconsistent": ("Inconsistent", "sum")}).reset_index()
+                    st.markdown("**By method**")
+                    st.dataframe(by_m, hide_index=True, width="stretch")
+                    bad = scope[~scope["_right"]]
+                    if len(bad):
+                        st.markdown("**Where methods go wrong most often** (how many selected methods got this item wrong)")
+                        hot = bad.groupby(["Case", "Where", "Difficulty"]).agg(Methods_wrong=("Method", "nunique"),
+                                                                              Which=("Method", lambda s: ", ".join(sorted(set(s))))).reset_index() \
+                                 .sort_values("Methods_wrong", ascending=False).head(10)
+                        st.dataframe(hot.rename(columns={"Methods_wrong": "Methods wrong", "Which": "Which methods"}), hide_index=True, width="stretch")
+
+            if df.empty:
+                st.success("Nothing to show with these filters. " + ("No mistakes found." if show == "Mistakes only" else ""), icon=":material/check_circle:")
+            else:
+                shown = ["Case", "Where", "Difficulty", "Original wording", "Renewal wording", "Method", "Result", "Why", "What the method said"]
+                view = df.reset_index(drop=True)
+                st.caption(f"{len(view)} row(s). {vm.OK_MARK} correct   {vm.MISS_MARK} missed a real change   "
+                           f"{vm.FALSE_MARK} flagged something that is not a real change   {vm.MIX_MARK} different between attempts")
+                ev = st.dataframe(view[shown].style.map(mark_color, subset=["Result"]), hide_index=True, width="stretch", height=480,
+                                  on_select="rerun", selection_mode="single-row", key="rv_table")
+                st.download_button("Download these rows (CSV)", view[shown].to_csv(index=False), file_name="review_table.csv", icon=":material/download:")
+                sel = ev.selection.rows if ev and ev.selection else []
+                if sel:
+                    row = view.iloc[sel[0]]
+                    head, orig, renew = vm.excerpt(cases_all[row["_case"]], row["_loc"])
+                    with st.container(border=True):
+                        st.markdown(f"#### {row['Case']} · {head}")
+                        st.markdown(f"**{row['Method']}**: {row['Result']}. {row['Why']}")
+                        if row["What the method said"]:
+                            st.caption(f"The method said: {row['What the method said']}")
+                        st.caption(f"Changed phrase: **{row['Original wording']}** → **{row['Renewal wording']}**")
+                        o, r_ = st.columns(2)
+                        o.text_area("Original policy text", orig, height=170, key=f"o_{sel[0]}_{row['_case']}")
+                        r_.text_area("Renewal policy text", renew, height=170, key=f"r_{sel[0]}_{row['_case']}")
+                else:
+                    st.caption("Tip: click a row to see the exact policy text it refers to.")
 
 # ============================================================ CASE EXPLORER
 with tab_cases:

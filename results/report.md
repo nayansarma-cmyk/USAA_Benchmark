@@ -1,6 +1,6 @@
 # Results
 
-52 scored outputs over 3 test cases (of 20 available).
+58 scored outputs over 3 test cases (of 20 available).
 
 ## 1. Accuracy (pooled TP/FP/FN over all cases and runs)
 
@@ -12,6 +12,8 @@
 | B_llm @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 1 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 6 | 8617 |
 | B_llm @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 2 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 6 | 13486 |
 | B_llm @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 3 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 6 | 18394 |
+| C_llm_plus_rules @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 0 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 3 | 4332 |
+| C_llm_plus_rules @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 1 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 3 | 9266 |
 | E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 0 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 6 | 1567 |
 | E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 1 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 6 | 6941 |
 | E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 2 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 6 | 12366 |
@@ -25,6 +27,8 @@
 | B_llm @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 1 | +0.145 | [+0.125, +0.167] | AI better |
 | B_llm @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 2 | +0.145 | [+0.125, +0.167] | AI better |
 | B_llm @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 3 | +0.145 | [+0.125, +0.167] | AI better |
+| C_llm_plus_rules @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 0 | +0.145 | [+0.125, +0.167] | AI better |
+| C_llm_plus_rules @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 1 | +0.145 | [+0.125, +0.167] | AI better |
 | E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 0 | +0.145 | [+0.125, +0.167] | AI better |
 | E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 1 | +0.145 | [+0.125, +0.167] | AI better |
 | E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 2 | +0.145 | [+0.125, +0.167] | AI better |
@@ -58,6 +62,7 @@
 | B_llm @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 1 | 0.00 | 0.00 | 0.00 | 0.00 |
 | B_llm @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 2 | 0.00 | 0.00 | 0.00 | 0.00 |
 | B_llm @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 3 | 0.00 | 0.00 | 0.00 | 0.00 |
+| C_llm_plus_rules @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 1 | 0.00 | 0.00 | 0.00 | 0.00 |
 | E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 1 | 0.00 | 0.00 | 0.00 | 0.00 |
 | E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 2 | 0.00 | 0.00 | 0.00 | 0.00 |
 | E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 3 | 0.00 | 0.00 | 0.00 | 0.00 |

@@ -36,6 +36,8 @@ pass. Every level is logged, so you can see whether more checking helps or hurts
 pip install -r requirements.txt
 streamlit run app.py        # opens http://localhost:8501
 ```
+The **Review table** tab lists every item in every case for every method (case, where in the policy, original vs renewal
+wording, result, and why), filterable to mistakes only; click a row to see the actual policy text.
 Pick methods, one or more Claude models (or type any model ID), bias tests and case count, press **Start benchmark**,
 then read **Scores** and **Process breakdown**. "Demo mode" runs offline with the fake LLM; turn it off and provide
 `ANTHROPIC_API_KEY` (env var or sidebar) for real runs. CLI equivalent:
