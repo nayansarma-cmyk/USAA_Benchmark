@@ -1,0 +1,5902 @@
+[
+  {
+    "id": "train_2000",
+    "split": "train",
+    "seed": 2000,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 1",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100000",
+        "new": "PA-200000"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2001",
+    "split": "train",
+    "seed": 2001,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 2",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100001",
+        "new": "PA-200001"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2002",
+    "split": "train",
+    "seed": 2002,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 3",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100002",
+        "new": "PA-200002"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2003",
+    "split": "train",
+    "seed": 2003,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 4",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100003",
+        "new": "PA-200003"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2004",
+    "split": "train",
+    "seed": 2004,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 5",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100004",
+        "new": "PA-200004"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2005",
+    "split": "train",
+    "seed": 2005,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 6",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100005",
+        "new": "PA-200005"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2006",
+    "split": "train",
+    "seed": 2006,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 7",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100006",
+        "new": "PA-200006"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2007",
+    "split": "train",
+    "seed": 2007,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 8",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100007",
+        "new": "PA-200007"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2008",
+    "split": "train",
+    "seed": 2008,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 9",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100008",
+        "new": "PA-200008"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2009",
+    "split": "train",
+    "seed": 2009,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 10",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100009",
+        "new": "PA-200009"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2010",
+    "split": "train",
+    "seed": 2010,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 11",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100010",
+        "new": "PA-200010"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2011",
+    "split": "train",
+    "seed": 2011,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 12",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100011",
+        "new": "PA-200011"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2012",
+    "split": "train",
+    "seed": 2012,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 13",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100012",
+        "new": "PA-200012"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2013",
+    "split": "train",
+    "seed": 2013,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 14",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100013",
+        "new": "PA-200013"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2014",
+    "split": "train",
+    "seed": 2014,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 15",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100014",
+        "new": "PA-200014"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2015",
+    "split": "train",
+    "seed": 2015,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 16",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100015",
+        "new": "PA-200015"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2016",
+    "split": "train",
+    "seed": 2016,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 17",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100016",
+        "new": "PA-200016"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2017",
+    "split": "train",
+    "seed": 2017,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 18",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100017",
+        "new": "PA-200017"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2018",
+    "split": "train",
+    "seed": 2018,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 19",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100018",
+        "new": "PA-200018"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2019",
+    "split": "train",
+    "seed": 2019,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 20",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100019",
+        "new": "PA-200019"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2020",
+    "split": "train",
+    "seed": 2020,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 21",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100020",
+        "new": "PA-200020"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2021",
+    "split": "train",
+    "seed": 2021,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 22",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100021",
+        "new": "PA-200021"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2022",
+    "split": "train",
+    "seed": 2022,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 23",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100022",
+        "new": "PA-200022"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2023",
+    "split": "train",
+    "seed": 2023,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 24",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100023",
+        "new": "PA-200023"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2024",
+    "split": "train",
+    "seed": 2024,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 25",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100024",
+        "new": "PA-200024"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2025",
+    "split": "train",
+    "seed": 2025,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 26",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100025",
+        "new": "PA-200025"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2026",
+    "split": "train",
+    "seed": 2026,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 27",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100026",
+        "new": "PA-200026"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2027",
+    "split": "train",
+    "seed": 2027,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 28",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100027",
+        "new": "PA-200027"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2028",
+    "split": "train",
+    "seed": 2028,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 29",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100028",
+        "new": "PA-200028"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2029",
+    "split": "train",
+    "seed": 2029,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 30",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100029",
+        "new": "PA-200029"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2030",
+    "split": "train",
+    "seed": 2030,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 31",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100030",
+        "new": "PA-200030"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2031",
+    "split": "train",
+    "seed": 2031,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 32",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100031",
+        "new": "PA-200031"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2032",
+    "split": "train",
+    "seed": 2032,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 33",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100032",
+        "new": "PA-200032"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2033",
+    "split": "train",
+    "seed": 2033,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 34",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100033",
+        "new": "PA-200033"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2034",
+    "split": "train",
+    "seed": 2034,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 35",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100034",
+        "new": "PA-200034"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2035",
+    "split": "train",
+    "seed": 2035,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 36",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100035",
+        "new": "PA-200035"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2036",
+    "split": "train",
+    "seed": 2036,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 37",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100036",
+        "new": "PA-200036"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2037",
+    "split": "train",
+    "seed": 2037,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 38",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100037",
+        "new": "PA-200037"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2038",
+    "split": "train",
+    "seed": 2038,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 39",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100038",
+        "new": "PA-200038"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2039",
+    "split": "train",
+    "seed": 2039,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 40",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100039",
+        "new": "PA-200039"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2040",
+    "split": "train",
+    "seed": 2040,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 41",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100040",
+        "new": "PA-200040"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2041",
+    "split": "train",
+    "seed": 2041,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 42",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100041",
+        "new": "PA-200041"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2042",
+    "split": "train",
+    "seed": 2042,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 43",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100042",
+        "new": "PA-200042"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2043",
+    "split": "train",
+    "seed": 2043,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 44",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100043",
+        "new": "PA-200043"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2044",
+    "split": "train",
+    "seed": 2044,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 45",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100044",
+        "new": "PA-200044"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2045",
+    "split": "train",
+    "seed": 2045,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 46",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100045",
+        "new": "PA-200045"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2046",
+    "split": "train",
+    "seed": 2046,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 47",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100046",
+        "new": "PA-200046"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2047",
+    "split": "train",
+    "seed": 2047,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 48",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100047",
+        "new": "PA-200047"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2048",
+    "split": "train",
+    "seed": 2048,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 49",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100048",
+        "new": "PA-200048"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2049",
+    "split": "train",
+    "seed": 2049,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 50",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100049",
+        "new": "PA-200049"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2050",
+    "split": "train",
+    "seed": 2050,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 51",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100050",
+        "new": "PA-200050"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2051",
+    "split": "train",
+    "seed": 2051,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 52",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100051",
+        "new": "PA-200051"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2052",
+    "split": "train",
+    "seed": 2052,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 53",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100052",
+        "new": "PA-200052"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2053",
+    "split": "train",
+    "seed": 2053,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 54",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100053",
+        "new": "PA-200053"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2054",
+    "split": "train",
+    "seed": 2054,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 55",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100054",
+        "new": "PA-200054"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2055",
+    "split": "train",
+    "seed": 2055,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 56",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100055",
+        "new": "PA-200055"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2056",
+    "split": "train",
+    "seed": 2056,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 57",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100056",
+        "new": "PA-200056"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2057",
+    "split": "train",
+    "seed": 2057,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 58",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100057",
+        "new": "PA-200057"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2058",
+    "split": "train",
+    "seed": 2058,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 59",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100058",
+        "new": "PA-200058"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2059",
+    "split": "train",
+    "seed": 2059,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 60",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100059",
+        "new": "PA-200059"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2060",
+    "split": "train",
+    "seed": 2060,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 61",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100060",
+        "new": "PA-200060"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2061",
+    "split": "train",
+    "seed": 2061,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 62",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100061",
+        "new": "PA-200061"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2062",
+    "split": "train",
+    "seed": 2062,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 63",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100062",
+        "new": "PA-200062"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2063",
+    "split": "train",
+    "seed": 2063,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 64",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100063",
+        "new": "PA-200063"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2064",
+    "split": "train",
+    "seed": 2064,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 65",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100064",
+        "new": "PA-200064"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2065",
+    "split": "train",
+    "seed": 2065,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 66",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100065",
+        "new": "PA-200065"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2066",
+    "split": "train",
+    "seed": 2066,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 67",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100066",
+        "new": "PA-200066"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2067",
+    "split": "train",
+    "seed": 2067,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 68",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100067",
+        "new": "PA-200067"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2068",
+    "split": "train",
+    "seed": 2068,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 69",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100068",
+        "new": "PA-200068"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2069",
+    "split": "train",
+    "seed": 2069,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 70",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100069",
+        "new": "PA-200069"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2070",
+    "split": "train",
+    "seed": 2070,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 71",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100070",
+        "new": "PA-200070"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2071",
+    "split": "train",
+    "seed": 2071,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 72",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100071",
+        "new": "PA-200071"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2072",
+    "split": "train",
+    "seed": 2072,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 73",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100072",
+        "new": "PA-200072"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2073",
+    "split": "train",
+    "seed": 2073,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 74",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100073",
+        "new": "PA-200073"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2074",
+    "split": "train",
+    "seed": 2074,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 75",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100074",
+        "new": "PA-200074"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2075",
+    "split": "train",
+    "seed": 2075,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 76",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100075",
+        "new": "PA-200075"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2076",
+    "split": "train",
+    "seed": 2076,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 77",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100076",
+        "new": "PA-200076"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2077",
+    "split": "train",
+    "seed": 2077,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 78",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100077",
+        "new": "PA-200077"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2078",
+    "split": "train",
+    "seed": 2078,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 79",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100078",
+        "new": "PA-200078"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2079",
+    "split": "train",
+    "seed": 2079,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 80",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100079",
+        "new": "PA-200079"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2080",
+    "split": "train",
+    "seed": 2080,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 81",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100080",
+        "new": "PA-200080"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2081",
+    "split": "train",
+    "seed": 2081,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 82",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100081",
+        "new": "PA-200081"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2082",
+    "split": "train",
+    "seed": 2082,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 83",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100082",
+        "new": "PA-200082"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2083",
+    "split": "train",
+    "seed": 2083,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 84",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100083",
+        "new": "PA-200083"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2084",
+    "split": "train",
+    "seed": 2084,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 85",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100084",
+        "new": "PA-200084"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2085",
+    "split": "train",
+    "seed": 2085,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 86",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100085",
+        "new": "PA-200085"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2086",
+    "split": "train",
+    "seed": 2086,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 87",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100086",
+        "new": "PA-200086"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2087",
+    "split": "train",
+    "seed": 2087,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 88",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100087",
+        "new": "PA-200087"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2088",
+    "split": "train",
+    "seed": 2088,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 89",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100088",
+        "new": "PA-200088"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2089",
+    "split": "train",
+    "seed": 2089,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 90",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100089",
+        "new": "PA-200089"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2090",
+    "split": "train",
+    "seed": 2090,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 91",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100090",
+        "new": "PA-200090"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2091",
+    "split": "train",
+    "seed": 2091,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 92",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100091",
+        "new": "PA-200091"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2092",
+    "split": "train",
+    "seed": 2092,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 93",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100092",
+        "new": "PA-200092"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2093",
+    "split": "train",
+    "seed": 2093,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 94",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100093",
+        "new": "PA-200093"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2094",
+    "split": "train",
+    "seed": 2094,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 95",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100094",
+        "new": "PA-200094"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2095",
+    "split": "train",
+    "seed": 2095,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 96",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100095",
+        "new": "PA-200095"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2096",
+    "split": "train",
+    "seed": 2096,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 97",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100096",
+        "new": "PA-200096"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2097",
+    "split": "train",
+    "seed": 2097,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 98",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100097",
+        "new": "PA-200097"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2098",
+    "split": "train",
+    "seed": 2098,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 99",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100098",
+        "new": "PA-200098"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  },
+  {
+    "id": "train_2099",
+    "split": "train",
+    "seed": 2099,
+    "domain": "insurance_policy",
+    "description": "Complex insurance policy comparison case 100",
+    "text_a": "Policy A document with declarations and coverage terms.",
+    "text_b": "Policy B document with modified declarations and coverage terms.",
+    "labels": [
+      "Policy Number",
+      "Named Insured",
+      "Policy Period",
+      "Vehicle",
+      "Premium"
+    ],
+    "key": [
+      {
+        "location": "Declarations",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "PA-100099",
+        "new": "PA-200099"
+      },
+      {
+        "location": "Coverage Limits",
+        "kind": "structured",
+        "tier": "structured",
+        "expected": true,
+        "old": "$100,000",
+        "$comment": "limit change",
+        "new": "$250,000"
+      },
+      {
+        "location": "Exclusions",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "coverage excluded for commercial use",
+        "new": "coverage allowed for limited rideshare use"
+      },
+      {
+        "location": "Claims Notice",
+        "kind": "clause_material",
+        "tier": "semantic",
+        "expected": true,
+        "old": "report within 30 days",
+        "new": "report within 10 days"
+      },
+      {
+        "location": "Wording",
+        "kind": "cosmetic",
+        "tier": "cosmetic",
+        "expected": false,
+        "old": "reimburse",
+        "new": "repay"
+      }
+    ]
+  }
+]
