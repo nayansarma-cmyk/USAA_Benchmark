@@ -31,6 +31,28 @@ pass. Every level is logged, so you can see whether more checking helps or hurts
 `swap` (document order), `authority` (fake compliance sign-off), `bandwagon` (fake prior reviewers),
 `padding` (long identical boilerplate in both; verbosity/dilution), `distraction` (reordered/reflowed/uppercased B).
 
+## Two tasks, one neutral comparison
+The study has no assumed winner: it measures where each approach is strong or weak.
+
+**1. Policy change detection** (`src/run.py`). Three case sets, never pooled in results:
+| Set | Cases | What it is |
+|---|---|---|
+| synthetic | 20 | Original generated cases |
+| usaa_100 | `test_2000`-`test_2099` | Built by `python -m src.usaa_cases` from `USAA_benchmark_cases_100.json` (source labels kept in `source_location` / `source_tier`). The source's "semantic" items (an exclusion wording, a 30 to 10 day notice) are *lexical* by this harness's definition, so rules score ~100% recall on them; the real tier is in `tier`. |
+| usaa_hard | `test_3000`-`test_3059` | `python -m src.hard_cases`. 26-section documents; meaning-only edits with no keyword or number change (verified automatically); cosmetic traps that change a keyword but not the meaning; one-character VIN changes, day/month swaps, ~1% premium changes; dense cases (up to 14 real edits); zero-change cases. Every key entry has an `edge` tag. |
+
+Note: in `usaa_hard`, keyword rules score 0% on the semantic tier *by definition* (no lexical tell). Compare methods per tier and per edge case, not on the pooled score.
+
+**2. Customer-query routing** (`src/routing.py`, `src/convos.py`): send each customer message to the right department.
+- *Single messages* (192, `python -m src.routing --gen`) and *multi-turn conversations* (134 conversations, 350 customer turns, up to 6 per
+  conversation, `python -m src.convos`) with follow-ups, clarifying questions, topic switches, corrections that use a misleading keyword,
+  escalation, fraud pivots, returns to an earlier topic, and attempts to steer the router. 132 turns only make sense with the conversation.
+- Methods: keyword rules; keyword rules with topic memory; AI router (sees the conversation); AI router (latest message only); hybrid.
+- Metrics: accuracy overall / by type / by department, turns that need context, whole-conversation success, urgent requests dropped into
+  General inquiries, consistency, speed and tokens. Gold labels come from the generators.
+- **Do not load real customer messages without the Data Privacy Officer.** The rules and templates share an author, so rules likely score higher
+  here than on independent or real traffic; add independently written messages before concluding.
+
 ## Run in the browser (localhost UI)
 ```
 pip install -r requirements.txt

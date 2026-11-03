@@ -5,8 +5,10 @@ from .llm import LLM, parse_json
 FATAL = ("AuthenticationError", "PermissionDeniedError", "NotFoundError", "BadRequestError")
 
 
-def load_cases(split):
-    return [json.load(open(f)) for f in sorted(glob.glob(str(config.CASES / f"{split}_*.json")))]
+def load_cases(split, case_set=None):
+    """case_set: None = every case; otherwise only cases whose "set" matches (cases without one are "synthetic")."""
+    cs = [json.load(open(f, encoding="utf-8")) for f in sorted(glob.glob(str(config.CASES / f"{split}_*.json")))]
+    return [c for c in cs if case_set is None or c.get("set", "synthetic") == case_set]
 
 
 def plan(arm_list, probe_list, runs, n_cases, n_judges=1):
@@ -20,7 +22,7 @@ def _row_key(r):
 
 
 def execute(arm_list, probe_list, runs, n_cases=0, passes=config.VERIFY_PASSES, verifier="cross",
-            mock=False, progress=None, should_stop=None, judge_models=None, verifier_model=None):
+            mock=False, progress=None, should_stop=None, judge_models=None, verifier_model=None, case_set=None):
     """Run the benchmark. `progress(done, total, label)` is called after each chain.
 
     * Every LLM chain is recorded with the judge/verifier model that produced it, so results from
@@ -32,7 +34,7 @@ def execute(arm_list, probe_list, runs, n_cases=0, passes=config.VERIFY_PASSES, 
     Returns dict(new, errors, path)."""
     llm = LLM(mock=mock)
     judge_models = judge_models or [config.JUDGE_MODEL]
-    cases = load_cases("test")
+    cases = load_cases("test", case_set)
     cases = cases[:n_cases] if n_cases else cases
     config.RESULTS.mkdir(parents=True, exist_ok=True)
     out = config.RESULTS / ("runs_mock.jsonl" if mock else "runs.jsonl")
@@ -98,6 +100,7 @@ def main():
     ap.add_argument("--verifier", choices=["cross", "same"], default="cross")
     ap.add_argument("--judge-models", default=config.JUDGE_MODEL, help="comma-separated; each is run and scored separately")
     ap.add_argument("--verifier-model", default=config.VERIFIER_CROSS_MODEL)
+    ap.add_argument("--case-set", default=None, help="synthetic | usaa_100 (default: all test cases)")
     ap.add_argument("--mock", action="store_true", help="offline fake LLM to test the pipeline")
     ap.add_argument("--gen-rules", action="store_true", help="have the LLM write rulesets (arms D*), then exit")
     a = ap.parse_args()
@@ -107,7 +110,7 @@ def main():
         arms.generate_rules(LLM(mock=a.mock), t["text_a"], t["text_b"])
         return
     r = execute(a.arms.split(","), a.probes.split(","), a.runs, a.cases, a.passes, a.verifier, a.mock,
-                judge_models=a.judge_models.split(","), verifier_model=a.verifier_model)
+                judge_models=a.judge_models.split(","), verifier_model=a.verifier_model, case_set=a.case_set)
     print(f"completed {r['new']} new chains ({r['errors']} failed, see errors.jsonl) -> {r['path']}")
 
 

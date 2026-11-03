@@ -30,15 +30,16 @@ def load_rows(path, mtime):
 
 
 @st.cache_resource(show_spinner=False)
-def get_summary(path, mtime, probe, level):
+def get_summary(path, mtime, probe, level, cset):
     rows, _ = load_rows(path, mtime)
+    rows = vm.filter_set(rows, cset)
     return vm.summarize(rows, probe, level), vm.compare_to_rules(rows, probe, level)
 
 
 @st.cache_resource(show_spinner=False)
-def get_report(path, mtime, mock):
+def get_report(path, mtime, mock, cset):
     old = sys.argv
-    sys.argv = ["score", "--file", path]
+    sys.argv = ["score", "--file", path] + (["--set", cset] if cset else [])
     try:
         with contextlib.redirect_stdout(io.StringIO()):
             score.main()
@@ -153,13 +154,18 @@ else:
 st.title("Policy change benchmark", icon=":material/fact_check:")
 st.caption("How do AI models compare with fixed rules at spotting meaningful changes between two versions of a car insurance policy?")
 
-tab_sum, tab_run, tab_review, tab_cases, tab_help = st.tabs([
+tab_sum, tab_run, tab_review, tab_cases, tab_route, tab_help = st.tabs([
     ":material/dashboard: Summary", ":material/play_arrow: Run a test", ":material/fact_check: Review table",
-    ":material/compare: Case explorer", ":material/help: How it works"])
+    ":material/compare: Case explorer", ":material/alt_route: Customer queries", ":material/help: How it works"])
 
 # ============================================================ RUN
 with tab_run:
-    total_cases = len(vm.case_files())
+    sets = vm.case_sets()
+    case_set = (st.segmented_control("Which cases?", list(sets), default=list(sets)[0], required=True, key="run_set",
+                                     format_func=lambda s: f"{vm.set_name(s)} ({sets[s]})",
+                                     help="Results for different case sets are kept apart and never pooled.")
+                if len(sets) > 1 else (list(sets)[0] if sets else None))
+    total_cases = sets.get(case_set, 0)
     if total_cases == 0:
         st.error("No test cases found. Run `python -m src.mutate --n 20` first.", icon=":material/error:")
 
@@ -276,7 +282,7 @@ with tab_run:
                 status.caption(f"Step {done} of {total}: {label}")
             try:
                 r = runner.execute(sel_arms, sel_probes, n_runs, n_case, n_pass, verifier, mock, progress=on_progress,
-                                   judge_models=judges or None, verifier_model=vmodel)
+                                   judge_models=judges or None, verifier_model=vmodel, case_set=case_set)
                 bar.progress(1.0)
                 status.empty()
                 st.success(f"Finished. Open the Summary tab to see the results ({r['new']} new result(s) computed).", icon=":material/check_circle:")
@@ -306,7 +312,11 @@ with tab_sum:
         f = runs_file(mock)
         path, mtime = str(f), f.stat().st_mtime
         rows, cases = load_rows(path, mtime)
-        md, tables = get_report(path, mtime, mock)
+        set_ids = vm.sets_in(rows)
+        cset = st.segmented_control("Case set", set_ids, default=set_ids[0], required=True, format_func=vm.set_name, key="sum_set",
+                                    help="Results are never pooled across case sets.") if len(set_ids) > 1 else set_ids[0]
+        rows = vm.filter_set(rows, cset)
+        md, tables = get_report(path, mtime, mock, cset)
 
         probe_ids = sorted({r["probe"] for r in rows}, key=lambda p: probes.PROBES.index(p) if p in probes.PROBES else 99)
         opt1, opt2 = st.columns(2)
@@ -320,7 +330,7 @@ with tab_sum:
                                            format_func=lambda v: "After double-checking" if v == "final" else "First answer only",
                                            help="Each AI answer can be reviewed by a second AI. Choose whether to score the reviewed answer or the first one.")
 
-        methods, comps = get_summary(path, mtime, probe, level)
+        methods, comps = get_summary(path, mtime, probe, level, cset)
         if not methods:
             st.info("No results for this condition yet.", icon=":material/info:")
         else:
@@ -423,8 +433,9 @@ with tab_sum:
 
 # ============================================================ REVIEW TABLE
 @st.cache_resource(show_spinner=False)
-def get_review(path, mtime, probe, level):
+def get_review(path, mtime, probe, level, cset):
     rows, cases = load_rows(path, mtime)
+    rows = vm.filter_set(rows, cset)
     methods = vm.summarize(rows, probe, level)
     names = vm.unique_names(methods)
     return pd.DataFrame(vm.review_table(rows, cases, probe, level, names)), [names[m["key"]] for m in methods], cases
@@ -439,6 +450,10 @@ with tab_review:
         rows, _ = load_rows(path, mtime)
         st.caption("Every item in every case study, for every method: where it is in the policy, what changed, "
                    "what the method did, and why that was right or wrong. Select a row to see the actual policy text.")
+        rset_ids = vm.sets_in(rows)
+        rset = st.segmented_control("Case set", rset_ids, default=rset_ids[0], required=True, format_func=vm.set_name, key="rv_set") \
+            if len(rset_ids) > 1 else rset_ids[0]
+        rows = vm.filter_set(rows, rset)
         probe_ids = sorted({r["probe"] for r in rows}, key=lambda p: probes.PROBES.index(p) if p in probes.PROBES else 99)
         k1, k2 = st.columns(2)
         rprobe = "none" if "none" in probe_ids else probe_ids[0]
@@ -448,7 +463,7 @@ with tab_review:
         if any(r["level"] > 0 for r in rows):
             rlevel = k2.segmented_control("Which AI answer", ["final", "first"], default="final", required=True, key="rv_level",
                                           format_func=lambda v: "After double-checking" if v == "final" else "First answer only")
-        full, method_names, cases_all = get_review(path, mtime, rprobe, rlevel)
+        full, method_names, cases_all = get_review(path, mtime, rprobe, rlevel, rset)
         if full.empty:
             st.info("No results for this condition yet.", icon=":material/info:")
         else:
@@ -462,6 +477,11 @@ with tab_review:
                                  help="easy / medium / hard = real changes; 'harmless edit' = rewording or formatting that should be ignored.")
             show = g2.segmented_control("Show", ["Mistakes only", "Everything", "Correct only"], default="Mistakes only", required=True, key="rv_show")
 
+            edge_all = sorted(full["Edge case"].unique())
+            pick_edge = st.multiselect("Edge case", edge_all, default=edge_all, key="rv_edge",
+                                       help="The specific kind of difficulty an item was built to test (for example 'Meaning flips: and or' or 'Trap: ...').") \
+                if len(edge_all) > 2 else edge_all
+            full = full[full["Edge case"].isin(pick_edge or [])]
             df = full[full["Method"].isin(pick_methods or []) & full["Case"].isin(pick_cases or []) & full["Difficulty"].isin(pick_diff or [])]
             if show == "Mistakes only":
                 df = df[~df["_right"]]
@@ -492,7 +512,7 @@ with tab_review:
             if df.empty:
                 st.success("Nothing to show with these filters. " + ("No mistakes found." if show == "Mistakes only" else ""), icon=":material/check_circle:")
             else:
-                shown = ["Case", "Where", "Difficulty", "Original wording", "Renewal wording", "Method", "Result", "Why", "What the method said"]
+                shown = ["Case", "Where", "Difficulty", "Edge case", "Original wording", "Renewal wording", "Method", "Result", "Why", "What the method said"]
                 view = df.reset_index(drop=True)
                 st.caption(f"{len(view)} row(s). {vm.OK_MARK} correct   {vm.MISS_MARK} missed a real change   "
                            f"{vm.FALSE_MARK} flagged something that is not a real change   {vm.MIX_MARK} different between attempts")
@@ -609,13 +629,21 @@ with tab_cases:
             d1.text_area("Original policy", case["text_a"], height=380)
             d2.text_area("Renewal policy", case["text_b"], height=380)
 
+# ============================================================ CUSTOMER QUERY ROUTING
+with tab_route:
+    from src import routing_ui
+    routing_ui.render(mock)
+
 # ============================================================ HELP
 with tab_help:
     st.markdown("""
 ### In one sentence
 We measure how AI models compare with a fixed set of if-then rules at spotting the changes that matter between two versions of a car insurance policy. There is no assumed winner: the aim is to see where each approach is strong or weak.
 
-### How the test works
+### Two tests in one app
+The **Summary, Run a test, Review table and Case explorer** tabs compare methods at finding changes between two policy versions (you can choose the original cases, the USAA cases, or the complex edge cases). The **Customer queries** tab compares methods at routing a customer message, or a whole multi-turn conversation, to the right department. Both use the same neutral approach and the same models.
+
+### How the policy test works
 1. **We build tests where we know the answer.** A script creates a policy, then a renewal copy with deliberate edits. Some are **real changes** (a limit, a deadline, a removed exclusion). Others are **harmless** (reworded text, different date or currency formatting). Because the script made every edit, it knows the exact answer. No AI or person marks the answers.
 2. **Different methods try to find the real changes.** *Rules only* follows fixed rules. *AI only* asks an AI model. *AI guided by rules* gives the AI the rules too. *Rules + AI together* lets rules handle the obvious fields and the AI judge reworded clauses.
 3. **A second AI can double-check** the first answer, so we can see whether extra checking helps or hurts.

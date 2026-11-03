@@ -88,9 +88,12 @@ def boot_diff(a_scores, b_scores, n=2000, seed=0):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--file", default=str(config.RESULTS / "runs.jsonl"))
+    ap.add_argument("--set", default=None, help="only score cases from this case set (synthetic | usaa_100)")
     a = ap.parse_args()
-    cases = {c["id"]: c for c in (json.load(open(f)) for f in glob.glob(str(config.CASES / "test_*.json")))}
+    cases = {c["id"]: c for c in (json.load(open(f, encoding="utf-8")) for f in glob.glob(str(config.CASES / "test_*.json")))}
     rows = [label_row(json.loads(l)) for l in open(a.file) if l.strip()]
+    if a.set:
+        rows = [r for r in rows if cases[r["case"]].get("set", "synthetic") == a.set]
     for r in rows:
         r["s"] = score_one(r["pred"], cases[r["case"]])
     G = defaultdict(list)

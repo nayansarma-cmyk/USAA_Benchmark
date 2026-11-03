@@ -145,6 +145,137 @@ def test_review_table_identifies_case_where_and_why():
     assert h.startswith("Section 3.1") and "notify" in o.lower()
 
 
+def test_usaa_cases_are_real_scoreable_documents():
+    from src import usaa_cases, rules
+    src = json.load(open(usaa_cases.SRC, encoding="utf-8"))
+    assert len(src) == 100
+    for s in src[:25]:
+        c = usaa_cases.build(s)
+        assert c["id"].startswith("test_") and c["set"] == "usaa_100" and len(c["text_a"]) > 2000
+        for e in c["key"]:
+            assert e["old"] in c["text_a"] and e["new"] in c["text_b"], (c["id"], e["location"])
+            assert e["source_location"] and e["source_tier"]
+        sc = score.score_one([dict(location=e["location"]) for e in c["key"] if e["expected"]], c)
+        assert (sc["fp"], sc["fn"]) == (0, 0)                      # oracle is perfect
+        assert rules.parse(c["text_a"])[0]["Policy Number"] != rules.parse(c["text_b"])[0]["Policy Number"]
+
+
+def test_case_sets_are_separate():
+    from src import viewmodel as vm
+    sets = vm.case_sets()
+    assert sets.get("synthetic") == 20 and sets.get("usaa_100") == 100, sets
+    assert len(run.load_cases("test", "usaa_100")) == 100 and len(run.load_cases("test", "synthetic")) == 20
+
+
+def test_routing_generator_rules_and_scoring():
+    from src import routing as R
+    qs = R.generate()
+    assert qs == R.generate() and len({q["text"] for q in qs}) == len(qs) and len(qs) > 150    # deterministic, no duplicates
+    assert {q["gold"] for q in qs} == set(R.INTENTS) and {q["tier"] for q in qs} == set(R.TIER_NAMES)
+    assert R.route_rules("I need a tow truck.")["intent"] == "roadside_assistance"
+    assert R.route_rules("I want to cancel my policy")["intent"] == "cancel_policy"
+    assert R.route_rules("blah blah")["intent"] == "general_inquiry"
+    old = config.RESULTS
+    with tempfile.TemporaryDirectory() as d:
+        config.RESULTS = Path(d)
+        try:
+            kw = dict(arm_list=list(R.ARM_NAMES), n_queries=40, runs=2, mock=True)
+            r1 = R.execute(judge_models=["m-x"], **kw)
+            r2 = R.execute(judge_models=["m-y"], **kw)            # a different model is NOT skipped as done
+            r3 = R.execute(judge_models=["m-x", "m-y"], **kw)     # fully resumable
+            assert r1["new"] > 0 and r2["new"] > 0 and r3["new"] == 0, (r1, r2, r3)
+            rows, _ = R.load_scored(r1["path"])
+            ms = R.summarize(rows)
+            assert {m["label"] for m in ms} >= {"Q_rules", "Q_llm @ m-x", "Q_hybrid @ m-y"}
+            assert all(0 <= m["accuracy"] <= 1 for m in ms)
+            rv = R.review_rows(rows)
+            assert all(x["Why"] and x["Method"] and x["Query"] for x in rv)
+            # hybrid only calls the AI for messages the rules are unsure about
+            hyb = next(m for m in ms if m["label"] == "Q_hybrid @ m-x")
+            llm = next(m for m in ms if m["label"] == "Q_llm @ m-x")
+            assert hyb["ai_share"] < llm["ai_share"] == 1.0
+        finally:
+            config.RESULTS = old
+
+
+def test_routing_garbage_ai_reply_is_scored_wrong_not_crashed():
+    from src import routing as R
+    q = dict(id="q_x", text="I need a tow truck.", gold="roadside_assistance", tier="direct")
+
+    class Junk:
+        def complete(self, *a, **k):
+            return dict(text="not json at all", tin=1, tout=1, latency=0.1, model="m")
+    d = R.run_arm("Q_llm", q, Junk(), "m", 0)
+    assert d["pred"] == "__invalid__" and d["calls"][0]["parse_ok"] is False
+
+
+def test_hard_cases_semantic_edits_are_really_blind_and_traps_are_real():
+    from src import hard_cases as H, rules
+    assert H.selfcheck()
+    cs = [json.load(open(f, encoding="utf-8")) for f in run.glob.glob(str(config.CASES / "test_30*.json"))]
+    assert len(cs) == 60 and {c["set"] for c in cs} == {"usaa_hard"}
+    seen = {"semantic": 0, "zero": 0, "dense": 0, "trap_false_alarm": 0}
+    for c in cs:
+        flagged = {m["location"] for m in rules.diff(c["text_a"], c["text_b"])["material"]}
+        sc = score.score_one([dict(location=e["location"]) for e in c["key"] if e["expected"]], c)
+        assert (sc["fp"], sc["fn"]) == (0, 0), c["id"]                              # exact answer key
+        for e in c["key"]:
+            assert e["old"] in c["text_a"] or e["old"].startswith("("), (c["id"], e["location"])
+            if e["tier"] == "semantic":
+                assert e["location"] not in flagged, (c["id"], e["edge"]); seen["semantic"] += 1   # truly no lexical tell
+            if e["tier"] == "lexical":
+                assert e["location"] in flagged
+            if e["kind"] == "cosmetic" and e.get("rules_false_alarm"):
+                seen["trap_false_alarm"] += 1
+        real = sum(e["expected"] for e in c["key"])
+        seen["zero"] += real == 0; seen["dense"] += real >= 10
+    assert seen["semantic"] > 150 and seen["zero"] == 5 and seen["dense"] >= 3 and seen["trap_false_alarm"] > 20, seen
+
+
+def test_conversations_have_context_and_never_leak_the_future():
+    from src import convos as C, routing as R
+    turns = C.flatten(C.generate())
+    assert len(turns) == len(C.flatten(C.generate())) > 300 and max(t["turn"] for t in turns) == 6
+    assert len({t["id"] for t in turns}) == len(turns) and {t["gold"] for t in turns} <= set(R.INTENTS)
+    by_conv = {}
+    for t in turns:
+        by_conv.setdefault(t["conv"], []).append(t)
+    for conv, ts in by_conv.items():                                                 # history = exactly the earlier customer turns, never later ones
+        for i, t in enumerate(ts):
+            earlier = [h["text"] for h in t["history"] if h["who"] == "customer"]
+            assert earlier == [x["text"] for x in ts[:i]], (conv, t["id"])
+            assert (t["turn"] == 1) == (not t["history"]), t["id"]
+    ctx = [t for t in turns if t["needs_context"]]
+    assert len(ctx) > 100
+    # stateless keyword rules cannot make sense of context-dependent turns; topic memory helps
+    stateless = sum(R.route_rules(t["text"])["intent"] == t["gold"] for t in ctx) / len(ctx)
+    memory = sum(R.route_rules_ctx(t["history"], t["text"])["intent"] == t["gold"] for t in ctx) / len(ctx)
+    assert memory > stateless + 0.2, (stateless, memory)
+    # the AI prompt shows the conversation to Q_llm but not to the latest-message-only arm
+    t = next(t for t in turns if t["history"])
+    assert "<CONVERSATION>" in R.route_prompt(t["text"], t["history"])[1] and "<CONVERSATION>" not in R.route_prompt(t["text"], None)[1]
+
+
+def test_conversation_run_scores_turns_and_whole_conversations():
+    from src import routing as R
+    old = config.RESULTS
+    with tempfile.TemporaryDirectory() as d:
+        config.RESULTS = Path(d)
+        try:
+            r = R.execute(R.DATASET_ARMS["convo"], 0, 2, ["m-x"], mock=True, dataset="convo")
+            assert r["new"] > 1000 and r["errors"] == 0
+            rows, _ = R.load_scored(r["path"])
+            rows = R.filter_dataset(rows, "convo")
+            ms = {m["label"]: m for m in R.summarize(rows)}
+            assert set(ms) == {"Q_rules", "Q_rules_ctx", "Q_llm @ m-x", "Q_llm_nohist @ m-x", "Q_hybrid @ m-x"}
+            for m in ms.values():
+                assert m["ctx"] is not None and m["conv_ok"] is not None and m["conv_ok"] <= m["accuracy"] + 1e-9
+            rv = R.review_rows(rows)
+            assert all(x["Conversation"] != "—" for x in rv) and any(x["Said so far"] != "—" for x in rv)
+        finally:
+            config.RESULTS = old
+
+
 def test_no_rules_baseline_is_handled():
     from src import viewmodel as vm
     ms = [dict(key=("B_llm @ x", "-"), arm="B_llm @ x", found=.9, correct=.8)]

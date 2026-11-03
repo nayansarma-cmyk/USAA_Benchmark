@@ -93,17 +93,48 @@ def pct(x):
 
 
 # ------------------------------------------------------------------ data
-def case_files(split="test"):
-    return sorted(glob.glob(str(config.CASES / f"{split}_*.json")), key=lambda f: int(f.rsplit("_", 1)[1][:-5]))
+SET_NAMES = {"synthetic": "Original synthetic cases", "usaa_100": "USAA cases", "usaa_hard": "Complex edge cases"}
+
+
+def set_name(s):
+    return SET_NAMES.get(s, s)
+
+
+def _set_of(f):
+    with open(f, encoding="utf-8") as fh:
+        return json.load(fh).get("set", "synthetic")
+
+
+def case_files(split="test", case_set=None):
+    fs = sorted(glob.glob(str(config.CASES / f"{split}_*.json")), key=lambda f: int(f.rsplit("_", 1)[1][:-5]))
+    return fs if case_set is None else [f for f in fs if _set_of(f) == case_set]
+
+
+def case_sets(split="test"):
+    """{set name: number of cases}, e.g. {'synthetic': 20, 'usaa_100': 100}."""
+    out = {}
+    for f in case_files(split):
+        s = _set_of(f)
+        out[s] = out.get(s, 0) + 1
+    return out
 
 
 def load_scored(path):
-    cases = {c["id"]: c for c in (json.load(open(f)) for f in case_files())}
+    cases = {c["id"]: c for c in (json.load(open(f, encoding="utf-8")) for f in case_files())}
     rows = [score.label_row(json.loads(l)) for l in open(path) if l.strip()]
     for r in rows:
         r["s"] = score.score_one(r["pred"], cases[r["case"]])
         r["f1"] = score.prf(r["s"]["tp"], r["s"]["fp"], r["s"]["fn"])[2]
+        r["set"] = cases[r["case"]].get("set", "synthetic")
     return rows, cases
+
+
+def filter_set(rows, case_set):
+    return rows if case_set is None else [r for r in rows if r.get("set", "synthetic") == case_set]
+
+
+def sets_in(rows):
+    return sorted({r.get("set", "synthetic") for r in rows})
 
 
 def pick_level(rows, level="final"):
@@ -272,6 +303,21 @@ def excerpt(case, loc):
     return str(loc), "(no matching text)", "(no matching text)"
 
 
+def edge_name(edge):
+    """'trap_modal_synonym' -> 'Trap: same meaning, different keyword (modal)'. Unknown tags are just humanised."""
+    names = {"clean_synonym": "Same meaning, reworded", "format_only": "Formatting only", "structured": "Listed value changed",
+             "standard_edit": "Standard clause edit", "vin_one_char": "One-character VIN change", "date_day_month_swap": "Day and month swapped",
+             "premium_small_change": "Premium changed by about 1%", "limit_half_changed": "Only one half of a two-part limit changed",
+             "clause_removed": "Clause deleted", "clause_added_restriction": "Clause added that narrows coverage"}
+    if not edge or edge == "—":
+        return "—"
+    if edge in names:
+        return names[edge]
+    if edge.startswith("trap_"):
+        return "Trap: same meaning, different keyword (" + edge[5:].replace("_", " ") + ")"
+    return "Meaning flips: " + edge.replace("_", " ")
+
+
 def _explain_outcome(kind, outcome, tier, is_rules):
     if outcome == "Found":
         return "Correctly flagged a real change."
@@ -307,7 +353,7 @@ def review_table(rows, cases, probe="none", level="final", names=None):
         method = (names or {}).get((arm, ver)) or pretty_arm(arm)
         key_canon = set()
 
-        def add(loc, tier, kind, expected, old, new, canon_key):
+        def add(loc, tier, kind, expected, old, new, canon_key, edge="—"):
             hits = sum(canon_key in P for P in preds)
             if expected:
                 outcome = "Found" if hits == n else "Missed" if hits == 0 else "Inconsistent"
@@ -320,13 +366,14 @@ def review_table(rows, cases, probe="none", level="final", names=None):
             said = next((P[canon_key].get("description", "") for P in preds if canon_key in P and P[canon_key].get("description")), "")
             out.append({"Case": f"Case {cid.split('_')[1]}", "Where": _where(case, loc),
                         "Difficulty": TIER_SHORT.get(tier, tier) if tier else "—",
+                        "Edge case": edge_name(edge),
                         "Original wording": old, "Renewal wording": new, "Method": method, "Result": label,
                         "Why": _explain_outcome(kind, outcome, tier, is_rules), "What the method said": said,
                         "_case": cid, "_loc": loc, "_right": right, "_outcome": outcome, "_method": method})
         for e in case["key"]:
             c = score.canon(e["location"], labels)
             key_canon.add(c)
-            add(e["location"], e["tier"], "cosmetic" if not e["expected"] else "real", e["expected"], e["old"], e["new"], c)
+            add(e["location"], e["tier"], "cosmetic" if not e["expected"] else "real", e["expected"], e["old"], e["new"], c, e.get("edge", "—"))
         seen = {}
         for P in preds:
             for c, item in P.items():

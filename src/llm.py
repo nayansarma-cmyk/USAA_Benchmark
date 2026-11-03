@@ -45,6 +45,13 @@ def parse_json(text):
 # ---- offline mock so the whole pipeline can be tested without an API key ----
 def _mock(user, h):
     rng = random.Random(int(h[:8], 16))
+    if "[[TASK:route]]" in user:
+        from . import routing
+        msg = re.search(r"<MESSAGE>\n(.*?)\n</MESSAGE>", user, re.S).group(1)
+        guess = routing.route_rules(msg)["intent"]
+        if rng.random() < 0.25:
+            guess = rng.choice(list(routing.INTENTS))
+        return json.dumps({"intent": guess, "confidence": round(rng.random(), 2)})
     if "[[TASK:rulegen]]" in user:
         return "```python\ndef detect_changes(text_a, text_b):\n    a = dict(l.split(': ',1) for l in text_a.splitlines() if ': ' in l)\n    b = dict(l.split(': ',1) for l in text_b.splitlines() if ': ' in l)\n    return [dict(location=k, change_type='structured', description='diff') for k in a if a[k] != b.get(k)]\n```"
     if "[[TASK:clause_review]]" in user:

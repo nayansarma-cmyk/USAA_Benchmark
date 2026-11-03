@@ -1,0 +1,80 @@
+{
+ "id": "test_2090",
+ "split": "test",
+ "set": "usaa_100",
+ "seed": 2090,
+ "source_id": "train_2090",
+ "domain": "insurance_policy",
+ "description": "Complex insurance policy comparison case 91",
+ "text_a": "PERSONAL AUTO POLICY - DECLARATIONS\nPolicy Number: PA-100090\nNamed Insured: Samuel O. Baker\nPolicy Period Start: 10/12/2025\nPolicy Period End: 10/12/2026\nContinuous Coverage Since: 03/27/2008\nCovered Vehicle: 2018 Subaru Outback, VIN ENN8XL1G3Z74RCCE4\nBodily Injury Liability Limit: $100,000 each person / $300,000 each accident\nProperty Damage Liability Limit: $100,000 each accident\nUninsured/Underinsured Motorist Limit: $50,000 each person / $100,000 each accident\nMedical Payments Limit: $10,000 each person\nCollision Deductible: $250\nComprehensive Deductible: $250\nRental Reimbursement: $30 per day / $900 maximum\nTotal Policy Premium: $1,075.86\n\nPOLICY TERMS\n\nSECTION 2.1 - Liability Coverage\nWe will pay damages for bodily injury or property damage for which an insured is legally responsible because of an auto accident. We will settle or defend, as we consider appropriate, any claim or suit asking for these damages. Our duty to settle or defend ends when our limit of liability has been paid.\n\nSECTION 2.2 - Liability Exclusions\nLiability Coverage is limited for any vehicle used to carry persons or property for a fee. For purposes of this section: coverage excluded for commercial use.\n\nSECTION 2.3 - Uninsured Motorist Coverage\nWe will pay compensatory damages which an insured is legally entitled to recover from the owner or operator of an uninsured motor vehicle because of bodily injury sustained by the insured, up to the limit shown in the Declarations.\n\nSECTION 3.1 - Duties After an Accident or Loss\nA person seeking coverage must cooperate with us in the investigation and settlement of any claim. In every case the insured must report within 30 days of the accident or loss.\n\nSECTION 3.2 - Collision Coverage\nWe will pay for direct and accidental loss to your covered auto caused by collision, less the applicable deductible shown in the Declarations. Payment will not exceed the lesser of the actual cash value of the damaged property or the amount necessary to repair or replace it.\n\nSECTION 3.3 - Comprehensive Coverage\nWe will pay for direct and accidental loss to your covered auto not caused by collision, including fire, theft, vandalism, flood, and contact with animals, less the applicable deductible shown in the Declarations.\n\nSECTION 3.4 - Rental Reimbursement\nIf your covered auto is withdrawn from use for more than 24 hours because of a covered loss, we will reimburse transportation expenses up to the daily and maximum amounts shown in the Declarations.\n\nSECTION 4.1 - Policy Territory\nCoverage applies only to accidents and losses occurring within the United States, its territories and possessions, or Canada.\n\nSECTION 4.2 - Other Insurance\nIf there is other applicable insurance, we will pay only our share of the loss. Our share is the proportion that our limit bears to the total of all applicable limits. Any insurance we provide for a vehicle you do not own is excess over any other collectible insurance.\n\nSECTION 5.1 - Cancellation\nYou may cancel this policy at any time by notifying us. We may cancel by mailing notice to the named insured at the address shown in the Declarations at least 10 days before the effective date of cancellation, or 15 days if cancellation is for nonpayment of premium.\n\nSECTION 5.2 - Fraud and Misrepresentation\nWe do not provide coverage for any insured who has knowingly concealed or misrepresented any material fact or circumstance in connection with this policy or a claim.\n\nSECTION 5.3 - Changes to This Policy\nThis policy contains all the agreements between you and us. Its terms may be changed only by an endorsement issued by us.\n",
+ "text_b": "PERSONAL AUTO POLICY - DECLARATIONS\nPolicy Number: PA-200090\nNamed Insured: Samuel O. Baker\nPolicy Period Start: 10/12/2025\nPolicy Period End: 10/12/2026\nContinuous Coverage Since: 03/27/2008\nCovered Vehicle: 2018 Subaru Outback, VIN ENN8XL1G3Z74RCCE4\nBodily Injury Liability Limit: $100,000 each person / $300,000 each accident\nProperty Damage Liability Limit: $250,000 each accident\nUninsured/Underinsured Motorist Limit: $50,000 each person / $100,000 each accident\nMedical Payments Limit: $10,000 each person\nCollision Deductible: $250\nComprehensive Deductible: $250\nRental Reimbursement: $30 per day / $900 maximum\nTotal Policy Premium: $1,075.86\n\nPOLICY TERMS\n\nSECTION 2.1 - Liability Coverage\nWe will pay damages for bodily injury or property damage for which an insured is legally responsible because of an auto accident. We will settle or defend, as we consider appropriate, any claim or suit asking for these damages. Our duty to settle or defend ends when our limit of liability has been paid.\n\nSECTION 2.2 - Liability Exclusions\nLiability Coverage is limited for any vehicle used to carry persons or property for a fee. For purposes of this section: coverage allowed for limited rideshare use.\n\nSECTION 2.3 - Uninsured Motorist Coverage\nWe will pay compensatory damages which an insured is legally entitled to recover from the owner or operator of an uninsured motor vehicle because of bodily injury sustained by the insured, up to the limit shown in the Declarations.\n\nSECTION 3.1 - Duties After an Accident or Loss\nA person seeking coverage must cooperate with us in the investigation and settlement of any claim. In every case the insured must report within 10 days of the accident or loss.\n\nSECTION 3.2 - Collision Coverage\nWe will pay for direct and accidental loss to your covered auto caused by collision, less the applicable deductible shown in the Declarations. Payment will not exceed the lesser of the actual cash value of the damaged property or the amount necessary to repair or replace it.\n\nSECTION 3.3 - Comprehensive Coverage\nWe will pay for direct and accidental loss to your covered auto not caused by collision, including fire, theft, vandalism, flood, and contact with animals, less the applicable deductible shown in the Declarations.\n\nSECTION 3.4 - Rental Reimbursement\nIf your covered auto is withdrawn from use for more than 24 hours because of a covered loss, we will repay transportation expenses up to the daily and maximum amounts shown in the Declarations.\n\nSECTION 4.1 - Policy Territory\nCoverage applies only to accidents and losses occurring within the United States, its territories and possessions, or Canada.\n\nSECTION 4.2 - Other Insurance\nIf there is other applicable insurance, we will pay only our share of the loss. Our share is the proportion that our limit bears to the total of all applicable limits. Any insurance we provide for a vehicle you do not own is excess over any other collectible insurance.\n\nSECTION 5.1 - Cancellation\nYou may cancel this policy at any time by notifying us. We may cancel by mailing notice to the named insured at the address shown in the Declarations at least 10 days before the effective date of cancellation, or 15 days if cancellation is for nonpayment of premium.\n\nSECTION 5.2 - Fraud and Misrepresentation\nWe do not provide coverage for any insured who has knowingly concealed or misrepresented any material fact or circumstance in connection with this policy or a claim.\n\nSECTION 5.3 - Changes to This Policy\nThis policy contains all the agreements between you and us. Its terms may be changed only by an endorsement issued by us.\n",
+ "labels": [
+  "Policy Number",
+  "Named Insured",
+  "Policy Period Start",
+  "Policy Period End",
+  "Continuous Coverage Since",
+  "Covered Vehicle",
+  "Bodily Injury Liability Limit",
+  "Property Damage Liability Limit",
+  "Uninsured/Underinsured Motorist Limit",
+  "Medical Payments Limit",
+  "Collision Deductible",
+  "Comprehensive Deductible",
+  "Rental Reimbursement",
+  "Total Policy Premium"
+ ],
+ "key": [
+  {
+   "location": "Policy Number",
+   "kind": "structured",
+   "tier": "structured",
+   "expected": true,
+   "old": "PA-100090",
+   "new": "PA-200090",
+   "source_location": "Declarations",
+   "source_tier": "structured"
+  },
+  {
+   "location": "Property Damage Liability Limit",
+   "kind": "structured",
+   "tier": "structured",
+   "expected": true,
+   "old": "$100,000",
+   "new": "$250,000",
+   "source_location": "Coverage Limits",
+   "source_tier": "structured",
+   "note": "limit change"
+  },
+  {
+   "location": "2.2",
+   "kind": "clause_material",
+   "tier": "lexical",
+   "expected": true,
+   "old": "coverage excluded for commercial use",
+   "new": "coverage allowed for limited rideshare use",
+   "source_location": "Exclusions",
+   "source_tier": "semantic"
+  },
+  {
+   "location": "3.1",
+   "kind": "clause_material",
+   "tier": "lexical",
+   "expected": true,
+   "old": "report within 30 days",
+   "new": "report within 10 days",
+   "source_location": "Claims Notice",
+   "source_tier": "semantic"
+  },
+  {
+   "location": "3.4",
+   "kind": "cosmetic",
+   "tier": "cosmetic",
+   "expected": false,
+   "old": "reimburse",
+   "new": "repay",
+   "source_location": "Wording",
+   "source_tier": "cosmetic"
+  }
+ ]
+}
