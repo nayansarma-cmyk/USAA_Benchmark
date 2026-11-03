@@ -84,6 +84,45 @@ def test_failed_chain_leaves_no_partial_rows():
             config.RESULTS = old
 
 
+def test_plain_english_names():
+    from src import viewmodel as vm
+    assert vm.short_model("claude-sonnet-5-5") == "Sonnet 5.5" and vm.short_model("my-custom") == "my-custom"
+    assert vm.pretty_arm("B_llm @ claude-haiku-5-5") == "AI only · Haiku 5.5" and vm.pretty_arm("A_rules") == "Rules only"
+    assert vm.verifier_note("cross:claude-opus-5-5") == "checked by Opus 5.5" and vm.verifier_note("-") == ""
+    ms = [dict(key=("B_llm @ x", "cross:claude-opus-5-5"), arm="B_llm @ x"), dict(key=("B_llm @ x", "same:x"), arm="B_llm @ x")]
+    n = vm.unique_names(ms)
+    assert len(set(n.values())) == 2, n   # collisions are disambiguated
+
+
+def test_summary_and_neutral_verdicts():
+    from src import viewmodel as vm
+    with tempfile.TemporaryDirectory() as d:
+        old = config.RESULTS
+        config.RESULTS = Path(d)
+        try:
+            r = run.execute(["A_rules", "B_llm"], ["none"], 2, 6, 1, mock=True, judge_models=["claude-sonnet-5-5"])
+            rows, _ = vm.load_scored(r["path"])
+        finally:
+            config.RESULTS = old
+    ms = vm.summarize(rows)
+    assert {m["arm"] for m in ms} == {"A_rules", "B_llm @ claude-sonnet-5-5"}
+    assert all(0 <= m["found"] <= 1 and 0 <= m["correct"] <= 1 for m in ms)
+    comps = vm.compare_to_rules(rows)
+    assert comps[("B_llm @ claude-sonnet-5-5", "cross:claude-opus-5-5")]["verdict"] in ("better", "worse", "unclear")
+    text = vm.headline(ms, vm.unique_names(ms), comps, 6).lower()
+    assert "baseline" in text and "scored best" not in text and "beat" not in text   # neutral framing
+    case = _case()
+    tbl, cols = vm.side_by_side(rows, dict(case, id=rows[0]["case"]), "none",
+                                [(m["arm"], m["verifier"], vm.pretty_arm(m["arm"])) for m in ms])
+    assert len(cols) == 2 and tbl[-1]["Item"] == "SCORE: Overall score"
+
+
+def test_no_rules_baseline_is_handled():
+    from src import viewmodel as vm
+    ms = [dict(key=("B_llm @ x", "-"), arm="B_llm @ x", found=.9, correct=.8)]
+    assert "nothing to compare" in vm.headline(ms, vm.unique_names(ms), {}, 3)
+
+
 if __name__ == "__main__":
     fns = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for f in fns:

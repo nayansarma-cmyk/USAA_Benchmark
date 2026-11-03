@@ -1,16 +1,17 @@
 # policy-diff-bench: deterministic rules vs. LLM-as-judge on auto-policy change detection
 
-Extends *Justice or Prejudice? (CALM)* to an insurance task. Question: can an LLM identify
-material policy changes better than a deterministic if-then ruleset, and how stable is it?
+Extends *Justice or Prejudice? (CALM)* to an insurance task. Question: how does an LLM compare with a
+deterministic if-then ruleset at identifying material policy changes, and how stable is it? The study has no
+assumed winner; the aim is to see where each approach is strong or weak.
 
 ## Fairness note (read before running)
-The goal is to *test* whether AI beats rules, so the design deliberately gives rules a fair shot:
+The design deliberately gives rules a fair shot, so the comparison is honest in either direction:
 - `src/rules.py` is a good-faith ruleset (normalises dates/currency/case, number diffs, legal lexicon).
   **Edit it to be as good as you can, then freeze it (commit/hash) before any real run.**
 - Answer keys come from a mutation script, not from hand-checking or another LLM.
 - Each material change has a tier: `structured`, `lexical` (numbers / legal-modifier words), or
-  `semantic` (meaning changes with no lexical tell). Expect rules ~100% on the first two; the claim
-  "AI is better" lives or dies on the `semantic` tier and on cosmetic false alarms. Report it that way.
+  `semantic` (meaning changes with no lexical tell). Rules are expected to do well on the first two, so
+  the tiers and the cosmetic false-alarm rate are where methods are most likely to differ. Report results per tier.
 - A hybrid arm (E) is included because the likely honest result is "rules for structure, AI for meaning".
 
 ## Arms

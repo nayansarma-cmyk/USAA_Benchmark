@@ -1,6 +1,6 @@
 # Results
 
-44 scored outputs over 3 test cases (of 20 available).
+52 scored outputs over 3 test cases (of 20 available).
 
 ## 1. Accuracy (pooled TP/FP/FN over all cases and runs)
 
@@ -12,10 +12,10 @@
 | B_llm @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 1 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 6 | 8617 |
 | B_llm @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 2 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 6 | 13486 |
 | B_llm @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 3 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 6 | 18394 |
-| E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 0 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 4 | 1684 |
-| E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 1 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 4 | 7111 |
-| E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 2 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 4 | 12556 |
-| E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 3 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 4 | 17977 |
+| E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 0 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 6 | 1567 |
+| E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 1 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 6 | 6941 |
+| E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 2 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 6 | 12366 |
+| E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | none | 3 | 1.000 | 1.000 | 1.000 | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 6 | 17758 |
 
 ## 2. F1 difference vs deterministic ruleset A (probe=none, paired bootstrap over cases, 95% CI)
 
@@ -25,10 +25,10 @@
 | B_llm @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 1 | +0.145 | [+0.125, +0.167] | AI better |
 | B_llm @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 2 | +0.145 | [+0.125, +0.167] | AI better |
 | B_llm @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 3 | +0.145 | [+0.125, +0.167] | AI better |
-| E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 0 | +0.134 | [+0.125, +0.143] | AI better |
-| E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 1 | +0.134 | [+0.125, +0.143] | AI better |
-| E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 2 | +0.134 | [+0.125, +0.143] | AI better |
-| E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 3 | +0.134 | [+0.125, +0.143] | AI better |
+| E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 0 | +0.145 | [+0.125, +0.167] | AI better |
+| E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 1 | +0.145 | [+0.125, +0.167] | AI better |
+| E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 2 | +0.145 | [+0.125, +0.167] | AI better |
+| E_hybrid @ claude-sonnet-5-5 | cross:claude-opus-5-5 | 3 | +0.145 | [+0.125, +0.167] | AI better |
 
 ## 3. Run-to-run consistency (mean pairwise Jaccard of flagged locations; 1.0 = identical every run)
 

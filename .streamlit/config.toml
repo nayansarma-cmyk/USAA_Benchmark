@@ -1,0 +1,11 @@
+[theme]
+base = "light"
+primaryColor = "#0070AD"
+greenColor = "#1b7f3b"
+redColor = "#c0392b"
+orangeColor = "#b9770e"
+baseRadius = "medium"
+showWidgetBorder = true
+
+[browser]
+gatherUsageStats = false

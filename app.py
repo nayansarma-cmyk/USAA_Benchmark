@@ -1,37 +1,16 @@
-﻿"""Local web UI for the policy-diff benchmark.   Start with:  streamlit run app.py"""
-import contextlib, glob, io, json, os, sys, time
+﻿"""Policy change benchmark: local web UI.   Start with:  streamlit run app.py"""
+import contextlib, io, json, os, sys, time
 import pandas as pd
 import streamlit as st
 
-from src import arms, config, probes, prompts, run as runner, score
+from src import arms, config, probes, prompts, run as runner, score, viewmodel as vm
 
-st.set_page_config(page_title="Policy Diff Benchmark", page_icon="📋", layout="wide")
+st.set_page_config(page_title="Policy change benchmark", page_icon=":material/fact_check:", layout="wide")
 
-MODEL_PRESETS = ["claude-fable-5-1", "claude-opus-5-5", "claude-sonnet-5-5", "claude-haiku-5-5"]
-ARM_INFO = {
-    "A_rules": "Deterministic ruleset (no AI)",
-    "B_llm": "AI reads both versions and lists changes",
-    "C_llm_plus_rules": "AI + your ruleset as guidance",
-    "E_hybrid": "Rules for structure, AI judges changed clauses",
-    "D1_llm_written_rules": "Rules written by AI (sample 1)",
-    "D2_llm_written_rules": "Rules written by AI (sample 2)",
-    "D3_llm_written_rules": "Rules written by AI (sample 3)",
-}
-PROBE_INFO = {
-    "none": "Baseline (no bias test)",
-    "swap": "Swap document order",
-    "authority": "Fake compliance sign-off",
-    "bandwagon": "Fake prior reviewers",
-    "padding": "Long identical boilerplate",
-    "distraction": "Reordered / reflowed text",
-}
-STATUS_COLOR = {"HIT": "#1b7f3b", "MISSED": "#c0392b", "FALSE ALARM": "#c0392b", "COSMETIC FALSE ALARM": "#b9770e"}
+GOOD, WARN, BAD = "#1b7f3b", "#b9770e", "#c0392b"
 
 
-def case_files():
-    return sorted(glob.glob(str(config.CASES / "test_*.json")), key=lambda f: int(os.path.basename(f)[5:-5]))
-
-
+# ============================================================ helpers
 def runs_file(mock):
     return config.RESULTS / ("runs_mock.jsonl" if mock else "runs.jsonl")
 
@@ -40,8 +19,36 @@ def err_file(mock):
     return config.RESULTS / ("errors_mock.jsonl" if mock else "errors.jsonl")
 
 
+def has_results(mock):
+    f = runs_file(mock)
+    return f.exists() and f.stat().st_size > 0
+
+
+@st.cache_resource(show_spinner=False)
+def load_rows(path, mtime):
+    return vm.load_scored(path)
+
+
+@st.cache_resource(show_spinner=False)
+def get_summary(path, mtime, probe, level):
+    rows, _ = load_rows(path, mtime)
+    return vm.summarize(rows, probe, level), vm.compare_to_rules(rows, probe, level)
+
+
+@st.cache_resource(show_spinner=False)
+def get_report(path, mtime, mock):
+    old = sys.argv
+    sys.argv = ["score", "--file", path]
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            score.main()
+    finally:
+        sys.argv = old
+    md = (config.RESULTS / ("report_mock.md" if mock else "report.md")).read_text(encoding="utf-8")
+    return md, parse_md_tables(md)
+
+
 def parse_md_tables(md):
-    """Split report markdown into [(heading, DataFrame)]."""
     out, title, rows = [], None, []
 
     def flush():
@@ -63,40 +70,12 @@ def parse_md_tables(md):
     return out
 
 
-def build_report(mock):
-    f = runs_file(mock)
-    if not f.exists() or f.stat().st_size == 0:
-        return None
-    old = sys.argv
-    sys.argv = ["score", "--file", str(f)]
-    try:
-        with contextlib.redirect_stdout(io.StringIO()):
-            score.main()
-    finally:
-        sys.argv = old
-    return (config.RESULTS / ("report_mock.md" if mock else "report.md")).read_text(encoding="utf-8")
-
-
-@st.cache_resource(show_spinner=False)
-def load_rows(path, mtime):
-    cases = {c["id"]: c for c in (json.load(open(f)) for f in case_files())}
-    rows = [score.label_row(json.loads(l)) for l in open(path) if l.strip()]
-    for r in rows:
-        r["s"] = score.score_one(r["pred"], cases[r["case"]])
-        r["f1"] = score.prf(r["s"]["tp"], r["s"]["fp"], r["s"]["fn"])[2]
-    return rows, cases
-
-
-def models_input(label, default, key, multi=True, help=None):
-    """Preset picker + free-text box so newly released model IDs can be used without code changes."""
-    if multi:
-        picked = st.multiselect(label, MODEL_PRESETS, default=default, key=key, help=help)
-    else:
-        picked = [st.selectbox(label, MODEL_PRESETS, index=MODEL_PRESETS.index(default[0]) if default[0] in MODEL_PRESETS else 0,
-                               key=key, help=help)]
-    extra = st.text_input("…or custom model ID(s), comma-separated", key=key + "_x", placeholder="e.g. claude-sonnet-5-5")
-    picked += [m.strip() for m in extra.split(",") if m.strip() and m.strip() not in picked]
-    return picked
+def avg_call_seconds():
+    f = runs_file(False)
+    if not f.exists():
+        return 8.0
+    lat = [c["latency"] for l in open(f) if l.strip() for c in json.loads(l).get("calls", []) if c.get("latency")]
+    return max(2.0, sum(lat) / len(lat)) if lat else 8.0
 
 
 def ping_models(models):
@@ -106,409 +85,462 @@ def ping_models(models):
     for m in models:
         t0 = time.time()
         try:
-            r = client.messages.create(model=m, max_tokens=8, messages=[{"role": "user", "content": "Reply with OK"}])
-            res.append((m, True, f"OK ({time.time() - t0:.1f}s)"))
+            client.messages.create(model=m, max_tokens=8, messages=[{"role": "user", "content": "Reply with OK"}])
+            res.append((m, True, f"working ({time.time() - t0:.1f}s)"))
         except Exception as e:
             res.append((m, False, f"{type(e).__name__}: {str(e)[:160]}"))
     return res
 
 
-# ======================= sidebar =======================
-st.sidebar.title("⚙️ Settings")
-mock = st.sidebar.toggle("Demo mode (no API calls)", value=not os.environ.get("ANTHROPIC_API_KEY"),
-                         help="Fake AI so you can try the app offline. Demo numbers are NOT meaningful and are stored separately.")
+def mark_color(v):
+    v = str(v)
+    return (f"color: {GOOD}; font-weight: 600" if v.startswith(vm.OK_MARK) else
+            f"color: {BAD}; font-weight: 600" if v.startswith(vm.MISS_MARK) else
+            f"color: {WARN}; font-weight: 600" if v.startswith(vm.FALSE_MARK) else "")
+
+
+def pct_col(label, help=None):
+    return st.column_config.ProgressColumn(label, min_value=0, max_value=100, format="%.0f%%", help=help)
+
+
+# ============================================================ sidebar: connection
+st.sidebar.header("Connection", divider=False)
+mock = st.sidebar.toggle(
+    "Practice mode", value=not (os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN")),
+    help="Uses made-up AI answers so you can explore the app for free, offline. Practice results are NOT meaningful and are kept separate.")
 if mock:
-    st.sidebar.warning("Demo mode: results are fake and only prove the pipeline runs.")
+    st.sidebar.warning("Practice mode: the AI answers are fake. Use it to learn the app, not to draw conclusions.",
+                       icon=":material/science:")
 else:
-    # Show which credential sources the SDK will see (presence only, never values).
     has_key, has_tok, has_url = (bool(os.environ.get(v)) for v in ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_BASE_URL"))
-    if config.ENV_LOADED:
-        st.sidebar.caption(f"Loaded from .env: {', '.join(config.ENV_LOADED)}")
-    st.sidebar.caption(f"ANTHROPIC_API_KEY:{'set' if has_key else 'not set'}  \n"
-                       f"ANTHROPIC_AUTH_TOKEN: {'set' if has_tok else 'not set'}  \n"
-                       f"ANTHROPIC_BASE_URL: {'set (custom endpoint)' if has_url else 'not set (api.anthropic.com)'}")
+    problems = []
     if has_key:
         k = os.environ["ANTHROPIC_API_KEY"]
-        problems = []
         if not k.startswith("sk-ant-"):
-            problems.append("does not start with `sk-ant-` (not a standard Anthropic API key)")
-        if k != k.strip() or any(ch.isspace() for ch in k):
-            problems.append("contains whitespace or a line break")
-        if any(ch in k for ch in "\"'`"):
-            problems.append("contains quote characters")
+            problems.append("does not start with sk-ant-")
+        if any(ch.isspace() for ch in k) or any(ch in k for ch in "\"'`"):
+            problems.append("contains spaces or quote marks")
         if len(k) < 80:
-            problems.append(f"is only {len(k)} characters (standard keys are ~100+, likely truncated)")
-        if problems:
-            st.sidebar.error("API key format problem: it " + "; and ".join(problems) + ".")
-        else:
-            st.sidebar.caption(f"Key format looks valid ({len(k)} chars). If it is still rejected, it is revoked, "
-                               "from another account, or needs a different endpoint.")
-    if has_url:
-        st.sidebar.warning("ANTHROPIC_BASE_URL is set: requests go to a custom endpoint, not api.anthropic.com. "
-                           "A direct Anthropic key will be rejected there. Remove that line from .env to use Anthropic directly.")
-    if has_tok:
-        st.sidebar.warning("ANTHROPIC_AUTH_TOKEN is set; the SDK sends it as a Bearer token and a stale one causes "
-                           "'401 Invalid bearer token'. Paste a key below to override it for this session.")
-    with st.sidebar.expander("Use a different API key", expanded=not (has_key or has_tok)):
-        key = st.text_input("Anthropic API key", type="password", help="Kept in memory for this session only.")
+            problems.append(f"is only {len(k)} characters, so it was probably cut off")
+    if has_key and not problems:
+        st.sidebar.success("API key found", icon=":material/check_circle:")
+    elif has_key:
+        st.sidebar.error("API key looks wrong: it " + "; ".join(problems) + ".", icon=":material/error:")
+    elif has_tok:
+        st.sidebar.warning("Using an access token instead of an API key.", icon=":material/warning:")
+    else:
+        st.sidebar.error("No API key found. Add one below or switch on Practice mode.", icon=":material/key_off:")
+    with st.sidebar.expander("Connection details", icon=":material/settings:", expanded=not (has_key or has_tok) or bool(problems)):
+        if config.ENV_LOADED:
+            st.caption(f"Loaded from .env: {', '.join(config.ENV_LOADED)}")
+        st.caption(f"API key: {'set' if has_key else 'not set'}  \nAccess token: {'set' if has_tok else 'not set'}  \n"
+                   f"Custom endpoint: {'set' if has_url else 'not set (uses api.anthropic.com)'}")
+        if has_tok:
+            st.warning("An access token is set. A stale one causes '401 Invalid bearer token'. Paste a key below to override it.")
+        if has_url:
+            st.warning("A custom endpoint is set, so a standard Anthropic key will be rejected there.")
+        key = st.text_input("Use a different API key", type="password", help="Kept in memory for this session only.")
         if key and st.button("Use this key"):
             os.environ["ANTHROPIC_API_KEY"] = key.strip()
-            os.environ.pop("ANTHROPIC_AUTH_TOKEN", None)   # this process only, so the bearer token can't shadow the key
+            os.environ.pop("ANTHROPIC_AUTH_TOKEN", None)
             st.rerun()
-    if not (has_key or has_tok):
-        st.sidebar.error("Enter an API key or switch on Demo mode.")
+        if st.button("Test the connection", icon=":material/wifi_tethering:"):
+            with st.spinner("Contacting the AI service..."):
+                for m, ok, msg in ping_models([config.JUDGE_MODEL]):
+                    (st.success if ok else st.error)(f"{vm.short_model(m)}: {msg}")
 
-st.title("📋 Policy Diff Benchmark")
-st.caption("Do AI models spot material changes between two auto-policy versions better than a deterministic ruleset?")
+# ============================================================ header
+st.title("Policy change benchmark", icon=":material/fact_check:")
+st.caption("How do AI models compare with fixed rules at spotting meaningful changes between two versions of a car insurance policy?")
 
-tab_run, tab_res, tab_proc, tab_cases, tab_help = st.tabs(
-    ["▶️ Run", "📊 Scores", "🔬 Process breakdown", "🔍 Browse cases", "❓ How it works"])
+tab_sum, tab_run, tab_cases, tab_help = st.tabs([
+    ":material/dashboard: Summary", ":material/play_arrow: Run a test",
+    ":material/compare: Case explorer", ":material/help: How it works"])
 
-# ======================= Run tab =======================
+# ============================================================ RUN
 with tab_run:
-    total_cases = len(case_files())
+    total_cases = len(vm.case_files())
     if total_cases == 0:
-        st.error("No test cases found. Run `python -m src.mutate --n 20` first.")
-    c1, c2 = st.columns(2)
-    with c1:
-        st.markdown("##### Methods")
-        sel_arms = st.multiselect("Methods to compare", list(ARM_INFO), default=["A_rules", "B_llm", "E_hybrid"],
-                                  format_func=lambda a: f"{a} — {ARM_INFO[a]}",
-                                  help="A_rules is the deterministic baseline. Include it to compare AI against it.")
-        sel_probes = st.multiselect("Bias tests", probes.PROBES, default=["none"],
-                                    format_func=lambda p: f"{p} — {PROBE_INFO.get(p, '')}")
-        has_llm = any(arms.ARMS[a][1] for a in sel_arms)
-        st.markdown("##### Models")
-        judges = models_input("AI judge model(s) — each is run and scored separately", ["claude-sonnet-5-5"], "judges",
-                              help="Pick several to compare models side by side in one run.")
-        verifier = st.radio("Verifier", ["cross", "same"], horizontal=True,
-                            help="cross = a different model checks the answer; same = each judge checks itself")
-        vmodels = models_input("Verifier model (used when Verifier = cross)", ["claude-opus-5-5"], "vmodel", multi=False)
-        vmodel = vmodels[-1]
-    with c2:
-        st.markdown("##### Size of the run")
-        k = st.slider("Number of test cases", 1, max(total_cases, 1), min(3, max(total_cases, 1)))
-        runs = st.slider("Repeats per AI method", 1, 5, 2, help="Used to measure run-to-run consistency.")
-        passes = st.slider("AI verification passes", 0, 3, config.VERIFY_PASSES)
-        if has_llm and not judges:
-            st.error("Pick at least one judge model.")
-        if not mock and has_llm:
-            if st.button("🔌 Test connection to selected models"):
-                with st.spinner("Pinging models..."):
-                    for m, ok, msg in ping_models(list(dict.fromkeys(judges + ([vmodel] if verifier == "cross" else [])))):
-                        (st.success if ok else st.error)(f"`{m}` — {msg}")
+        st.error("No test cases found. Run `python -m src.mutate --n 20` first.", icon=":material/error:")
 
-    needs_gen = [a for a in sel_arms if a.startswith("D") and not (config.GEN_RULES / f"rules_{a[1]}.py").exists()]
-    if needs_gen:
-        st.warning(f"{', '.join(needs_gen)} need AI-written rulesets that don't exist yet.")
-        rw = models_input("Model that writes the rulesets", ["claude-opus-5-5"], "rulewriter", multi=False)
-        if st.button("Generate AI-written rulesets"):
-            with st.spinner("Asking the AI to write rules..."):
-                from src.llm import LLM
-                config.RULEWRITER_MODEL = rw[-1]
-                t = runner.load_cases("train")[0]
-                arms.generate_rules(LLM(mock=mock), t["text_a"], t["text_b"])
-            st.rerun()
-    if any(a.startswith("D") for a in sel_arms):
-        st.caption("⚠️ D arms execute AI-written code. Run inside a VM/container.")
+    st.subheader("1. How thorough should the test be?")
+    PRESETS = {
+        "Quick check": dict(cases=min(3, total_cases), runs=1, passes=1, probes=["none"],
+                            blurb="3 cases, one attempt each. A few minutes. Best for a first look."),
+        "Standard": dict(cases=total_cases, runs=3, passes=1, probes=["none"],
+                         blurb=f"All {total_cases} cases, 3 attempts each so we can see how consistent each method is."),
+        "Full study": dict(cases=total_cases, runs=3, passes=1, probes=list(probes.PROBES),
+                           blurb="Everything in Standard, plus the 'trap' tests that try to mislead the AI. Takes the longest."),
+        "Custom": None,
+    }
+    preset = st.segmented_control("Test size", list(PRESETS), default="Quick check", required=True, label_visibility="collapsed")
+    if preset == "Custom":
+        c1, c2, c3 = st.columns(3)
+        n_case = c1.slider("Number of test cases", 1, max(total_cases, 1), min(3, max(total_cases, 1)))
+        n_runs = c2.slider("Attempts per AI method", 1, 5, 2, help="More attempts show how consistent each AI is.")
+        n_pass = c3.slider("AI double-check rounds", 0, 3, 1, help="After the AI answers, a second AI can review the answer. 0 = no review.")
+        sel_probes = st.pills("Trap tests to include", probes.PROBES, selection_mode="multi", default=["none"],
+                              format_func=lambda p: vm.PROBE_NAMES[p])
+        sel_probes = sel_probes or ["none"]
+    else:
+        P = PRESETS[preset]
+        n_case, n_runs, n_pass, sel_probes = P["cases"], P["runs"], P["passes"], P["probes"]
+        st.caption(P["blurb"])
 
-    ready = bool(sel_arms and sel_probes and total_cases and (judges or not has_llm))
+    st.subheader("2. What should be compared?")
+    sel_arms = st.pills("Methods", list(vm.ARM_NAMES), selection_mode="multi", default=["A_rules", "B_llm", "E_hybrid"],
+                        format_func=lambda a: vm.ARM_NAMES[a], label_visibility="collapsed")
+    with st.expander("What do these methods mean?", icon=":material/info:"):
+        for a in vm.ARM_NAMES:
+            st.markdown(f"**{vm.ARM_NAMES[a]}**: {vm.ARM_HELP[a]}")
+    has_llm = any(arms.ARMS[a][1] for a in sel_arms)
+    judges = []
+    if has_llm:
+        judges = st.pills("Which AI models?", vm.MODEL_PRESETS, selection_mode="multi", default=["claude-sonnet-5-5"],
+                          format_func=vm.short_model, help="Pick more than one to compare models side by side.") or []
+    else:
+        st.caption("No AI method selected, so no AI models are needed.")
+
+    with st.expander("More options", icon=":material/tune:"):
+        if has_llm:
+            custom = st.text_input("Other model IDs (comma-separated)", placeholder="e.g. claude-sonnet-5-5",
+                                   help="Use this for a newly released model that is not in the list above.")
+            judges += [m.strip() for m in custom.split(",") if m.strip() and m.strip() not in judges]
+            verifier = st.segmented_control("Who double-checks the AI's answer?", ["cross", "same"], default="cross", required=True,
+                                            format_func=lambda v: "A different model" if v == "cross" else "The same model",
+                                            help="A different model is a more independent check. 'Same model' tests whether an AI is biased toward its own answers.")
+            vmodel = st.selectbox("Checking model (when a different model checks)", vm.MODEL_PRESETS,
+                                  index=vm.MODEL_PRESETS.index("claude-opus-5-5"), format_func=vm.short_model)
+            vmodel = vmodel or config.VERIFIER_CROSS_MODEL
+        else:
+            verifier, vmodel = "cross", config.VERIFIER_CROSS_MODEL
+        needs_gen = [a for a in sel_arms if a.startswith("D") and not (config.GEN_RULES / f"rules_{a[1]}.py").exists()]
+        if needs_gen:
+            st.warning("The 'AI-written rules' methods need their rule sets created first.")
+            rw = st.selectbox("Model that writes the rules", vm.MODEL_PRESETS, index=vm.MODEL_PRESETS.index("claude-opus-5-5"),
+                              format_func=vm.short_model)
+            if st.button("Create the AI-written rule sets"):
+                with st.spinner("Asking the AI to write rules..."):
+                    from src.llm import LLM
+                    config.RULEWRITER_MODEL = rw
+                    arms.generate_rules(LLM(mock=mock), *[runner.load_cases("train")[0][k] for k in ("text_a", "text_b")])
+                st.rerun()
+        if any(a.startswith("D") for a in sel_arms):
+            st.caption("The AI-written rules run as code on this computer. Do this inside a VM or container.")
+        if not mock and has_llm and st.button("Test the selected models", icon=":material/wifi_tethering:"):
+            with st.spinner("Contacting the AI service..."):
+                for m, ok, msg in ping_models(list(dict.fromkeys(judges + ([vmodel] if verifier == "cross" else [])))):
+                    (st.success if ok else st.error)(f"{vm.short_model(m)}: {msg}")
+        fp = runs_file(mock)
+        if fp.exists():
+            st.caption(f"Saved results: {sum(1 for _ in open(fp))} rows")
+            if st.button("Clear saved results", icon=":material/delete:", help="Removes the saved scores. Cached AI replies are kept, so re-running is cheap."):
+                fp.unlink()
+                if err_file(mock).exists():
+                    err_file(mock).unlink()
+                st.rerun()
+
+    st.subheader("3. Review and start")
+    ready = bool(sel_arms and total_cases and (judges or not has_llm))
+    if has_llm and not judges:
+        st.warning("Pick at least one AI model.", icon=":material/warning:")
+    if not sel_arms:
+        st.warning("Pick at least one method.", icon=":material/warning:")
     if ready:
         nj = len(judges) if has_llm else 1
-        chains = runner.plan(sel_arms, sel_probes, runs, k, nj)
-        llm_chains = sum(1 for a in sel_arms if arms.ARMS[a][1]) * k * len(sel_probes) * runs * nj
-        calls = llm_chains * (1 + passes)
-        st.info(f"**{chains}** chains · up to **{calls}** API calls (cached/already-finished chains are skipped)"
-                if calls and not mock else f"**{chains}** chains · no API calls")
+        chains = runner.plan(sel_arms, sel_probes, n_runs, n_case, nj)
+        llm_chains = sum(1 for a in sel_arms if arms.ARMS[a][1]) * n_case * len(sel_probes) * n_runs * nj
+        calls = llm_chains * (1 + n_pass)
+        with st.container(border=True):
+            st.markdown(f"**{n_case}** test cases · **{len(sel_arms)}** methods" + (f" · **{len(judges)}** AI model(s)" if has_llm else "")
+                        + f" · **{len(sel_probes)}** condition(s)")
+            if mock:
+                st.caption("Practice mode: no AI requests will be made. Takes seconds.")
+            elif calls:
+                mins = calls * avg_call_seconds() / 60
+                st.caption(f"About **{calls}** AI requests, roughly **{max(1, round(mins))} minute(s)**. "
+                           "Anything already finished is reused, so this is an upper estimate.")
+                if calls > 500:
+                    st.warning("This is a large run. Consider a Quick check first.", icon=":material/warning:")
+            else:
+                st.caption("No AI requests needed.")
 
-    if st.button("▶️ Start benchmark", type="primary", disabled=not ready):
+    if st.button("Start the test", type="primary", icon=":material/play_arrow:", disabled=not ready):
         if not mock and has_llm and not (os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN")):
-            st.error("Set an API key in the sidebar or enable Demo mode.")
+            st.error("There is no API key. Add one in the sidebar, or switch on Practice mode.", icon=":material/key_off:")
         else:
             bar, status = st.progress(0.0), st.empty()
 
             def on_progress(done, total, label):
                 bar.progress(done / total if total else 1.0)
-                status.text(f"{done}/{total} — {label}")
+                status.caption(f"Step {done} of {total}: {label}")
             try:
-                r = runner.execute(sel_arms, sel_probes, runs, k, passes, verifier, mock, progress=on_progress,
+                r = runner.execute(sel_arms, sel_probes, n_runs, n_case, n_pass, verifier, mock, progress=on_progress,
                                    judge_models=judges or None, verifier_model=vmodel)
                 bar.progress(1.0)
-                st.success(f"Done. {r['new']} new chains computed. See **Scores** and **Process breakdown**.")
+                status.empty()
+                st.success(f"Finished. Open the Summary tab to see the results ({r['new']} new result(s) computed).", icon=":material/check_circle:")
+                st.toast("Test finished. See the Summary tab.", icon=":material/check_circle:")
                 if r["errors"]:
-                    st.warning(f"{r['errors']} chain(s) failed and were NOT scored — details on the Scores tab. Re-run to retry them.")
+                    st.warning(f"{r['errors']} item(s) failed and were not scored. Start the test again to retry them; "
+                               "details are on the Summary tab.", icon=":material/warning:")
             except Exception as e:
-                st.error(f"Run stopped: {e}")
+                st.error(f"The test stopped: {e}", icon=":material/error:")
                 if "AuthenticationError" in str(e):
-                    st.info("Authentication failed before any chain was scored, so nothing was saved. Check the credential "
-                            "status in the sidebar, use *Test connection*, then start again; finished work is cached.")
+                    st.info("The AI service rejected the API key before anything was scored, so nothing was saved. "
+                            "Open 'Connection details' in the sidebar, test the connection, then start again. Finished work is kept.",
+                            icon=":material/key:")
 
-    st.divider()
-    fpath = runs_file(mock)
-    if fpath.exists():
-        st.caption(f"Saved results: `{fpath.name}` ({sum(1 for _ in open(fpath))} rows)")
-        if st.button("🗑️ Clear saved results (API response cache is kept)"):
-            fpath.unlink()
-            if err_file(mock).exists():
-                err_file(mock).unlink()
-            st.rerun()
-
-# ======================= Scores tab =======================
-with tab_res:
-    f = runs_file(mock)
-    try:
-        md = build_report(mock)
-    except Exception as e:
-        md = None
-        st.error(f"Could not score results: {type(e).__name__}: {e}")
-    if md is None:
-        st.info("No results yet — run a benchmark first.")
+# ============================================================ SUMMARY
+with tab_sum:
+    if not has_results(mock):
+        st.info("No results yet. It takes three steps:", icon=":material/info:")
+        a, b, c = st.columns(3)
+        for col, icon, t, d in [(a, ":material/tune:", "1. Choose", "Open **Run a test** and pick a Quick check."),
+                                (b, ":material/play_arrow:", "2. Run", "Press **Start the test**. Practice mode is free and instant."),
+                                (c, ":material/dashboard:", "3. Read", "Come back here for a plain-English verdict.")]:
+            with col.container(border=True):
+                st.markdown(f"#### {icon} {t}")
+                st.write(d)
     else:
-        rows, cases = load_rows(str(f), f.stat().st_mtime)
-        tables = dict(parse_md_tables(md))
+        f = runs_file(mock)
+        path, mtime = str(f), f.stat().st_mtime
+        rows, cases = load_rows(path, mtime)
+        md, tables = get_report(path, mtime, mock)
 
-        # ---- reliability panel ----
-        n_calls = sum(len(r["calls"]) for r in rows if r["level"] == 0 and r.get("calls")) if rows else 0
-        bad_parse = sum(1 for r in rows for c in r.get("calls", []) if not c["parse_ok"])
-        n_err = sum(1 for _ in open(err_file(mock))) if err_file(mock).exists() else 0
-        n_case_used = len({r["case"] for r in rows})
-        with st.container(border=True):
-            st.markdown("##### Data health")
-            h1, h2, h3, h4 = st.columns(4)
-            h1.metric("Cases scored", n_case_used)
-            h2.metric("Failed chains (not scored)", n_err)
-            h3.metric("Unparseable AI replies", bad_parse)
-            h4.metric("Models", len({r.get("judge") for r in rows if r.get("judge", "-") != "-"}) or "-")
-            if n_err:
-                with st.expander("Show errors"):
-                    st.dataframe(pd.DataFrame([json.loads(l) for l in open(err_file(mock))]), width="stretch", hide_index=True)
-            if bad_parse:
-                st.warning("Some AI replies were not valid JSON and were scored as 'no change' (or the prior answer was kept). "
-                           "This lowers that model's recall — see the Process breakdown tab for the raw replies.")
-            if n_case_used < 20:
-                st.caption(f"Only {n_case_used} case(s) scored. Treat differences as indicative until the confidence intervals in table 2 exclude zero.")
+        probe_ids = sorted({r["probe"] for r in rows}, key=lambda p: probes.PROBES.index(p) if p in probes.PROBES else 99)
+        opt1, opt2 = st.columns(2)
+        probe = "none" if "none" in probe_ids else probe_ids[0]
+        if len(probe_ids) > 1:
+            probe = opt1.selectbox("Condition", probe_ids, index=probe_ids.index(probe), format_func=lambda p: vm.PROBE_NAMES.get(p, p),
+                                   help="Normal = the standard test. Others are trap tests.")
+        level = "final"
+        if any(r["level"] > 0 for r in rows):
+            level = opt2.segmented_control("Which AI answer to score", ["final", "first"], default="final", required=True,
+                                           format_func=lambda v: "After double-checking" if v == "final" else "First answer only",
+                                           help="Each AI answer can be reviewed by a second AI. Choose whether to score the reviewed answer or the first one.")
 
-        # ---- headline ----
-        acc = tables.get("1. Accuracy (pooled TP/FP/FN over all cases and runs)")
-        if acc is not None:
-            st.subheader("Headline: model & method scores")
-            c1, c2 = st.columns(2)
-            probe_pick = c1.selectbox("Bias test", sorted(acc["probe"].unique()), index=sorted(acc["probe"].unique()).index("none") if "none" in set(acc["probe"]) else 0)
-            maxp = int(acc["passes"].max())
-            level_pick = c2.selectbox("After AI verification pass", ["final"] + list(range(maxp + 1)),
-                                      help="0 = the model's first answer; 1..N = after each extra AI check. Rules always show their single result.")
-            sub = acc[acc["probe"] == probe_pick]
-            if level_pick == "final":
-                sub = sub.sort_values("passes").groupby(["arm", "verifier"], as_index=False).last()
-            else:
-                sub = sub[(sub["passes"] == level_pick) | (sub["verifier"] == "-")]
-            sub = sub.sort_values("F1", ascending=False)
-            cols = [c for c in ["arm", "verifier", "passes", "precision", "recall", "F1", "cosmetic false-alarm rate",
-                                "structured recall", "lexical recall", "semantic recall", "added/removed recall",
-                                "cases x runs", "tokens/chain"] if c in sub.columns]
-            st.dataframe(sub[cols], width="stretch", hide_index=True, column_config={
-                "F1": st.column_config.ProgressColumn("F1", min_value=0, max_value=1, format="%.3f"),
-                "recall": st.column_config.ProgressColumn("recall", min_value=0, max_value=1, format="%.3f"),
-                "precision": st.column_config.ProgressColumn("precision", min_value=0, max_value=1, format="%.3f")})
-            st.bar_chart(sub.set_index("arm")[["precision", "recall", "F1"]])
-            st.caption("Rows labelled `@ model` are AI arms. `A_rules` / `D*` are deterministic. "
-                       "Semantic recall (changes with no lexical tell) is where AI-vs-rules is decided.")
-
-        # ---- per-case matrix ----
-        with st.expander("Per-case F1 matrix (final answer, baseline probe)"):
-            base = [r for r in rows if r["probe"] == "none"]
-            last = {}
-            for r in base:
-                kk = (r["case"], r["arm"], r["verifier"], r["run"])
-                if kk not in last or r["level"] > last[kk]["level"]:
-                    last[kk] = r
-            m = pd.DataFrame([dict(case=r["case"], arm=r["arm"], f1=r["f1"]) for r in last.values()])
-            if not m.empty:
-                piv = m.groupby(["case", "arm"])["f1"].mean().unstack()
-                st.dataframe(piv, width="stretch", column_config={c: st.column_config.ProgressColumn(c, min_value=0, max_value=1, format="%.2f") for c in piv.columns})
-
-        st.subheader("All report tables")
-        for title, df in tables.items():
-            with st.expander(title, expanded=title.startswith("2.")):
-                st.dataframe(df, width="stretch", hide_index=True)
-        st.download_button("Download report.md", md, file_name="report.md")
-
-# ======================= Process breakdown tab =======================
-with tab_proc:
-    f = runs_file(mock)
-    if not f.exists() or f.stat().st_size == 0:
-        st.info("Run a benchmark first.")
-    else:
-        rows, cases = load_rows(str(f), f.stat().st_mtime)
-        p1, p2, p3, p4 = st.columns(4)
-        case_id = p1.selectbox("Case", sorted({r["case"] for r in rows}, key=lambda x: int(x.split("_")[1])))
-        arm_label = p2.selectbox("Method / model", sorted({r["arm"] for r in rows if r["case"] == case_id}))
-        pr = p3.selectbox("Bias test", sorted({r["probe"] for r in rows if r["case"] == case_id and r["arm"] == arm_label}), key="proc_probe")
-        cand = [r for r in rows if r["case"] == case_id and r["arm"] == arm_label and r["probe"] == pr]
-        run_ids = sorted({r["run"] for r in cand})
-        run_id = p4.selectbox("Repeat #", run_ids, format_func=lambda i: f"run {i + 1}")
-        chain = sorted([r for r in cand if r["run"] == run_id], key=lambda r: r["level"])
-        case = cases[case_id]
-
-        # ---------- side-by-side: golden standard vs deterministic vs LLM ----------
-        st.markdown("##### Side-by-side: golden standard vs deterministic vs LLM")
-        combos = sorted({(r["arm"], r["verifier"]) for r in rows if r["case"] == case_id and r["probe"] == pr})
-
-        def cname(a, v):
-            return a if sum(1 for x in combos if x[0] == a) == 1 else f"{a} [{v}]"
-        opts = {cname(a, v): (a, v) for a, v in combos}
-        sc1, sc2, sc3 = st.columns([3, 1, 1])
-        chosen = sc1.multiselect("Methods to show", list(opts), default=list(opts))
-        every = sc2.checkbox("Every verification pass", value=False, help="One column per AI check pass instead of just the final answer.")
-        detail = sc3.checkbox("Show what each said", value=False, help="Adds the method's own description to each flagged cell.")
-
-        lab = case["labels"]
-        key_items = [(e, score.canon(e["location"], lab)) for e in case["key"]]
-        key_canon = {c for _, c in key_items}
-        cols = {}   # column title -> (canon->description, canon->location as written, run-row)
-        for nm in chosen:
-            a, v = opts[nm]
-            cand = [r for r in rows if r["case"] == case_id and r["probe"] == pr and r["arm"] == a and r["verifier"] == v]
-            rn = run_id if run_id in {r["run"] for r in cand} else min(r["run"] for r in cand)
-            ch = sorted([r for r in cand if r["run"] == rn], key=lambda r: r["level"])
-            for r in (ch if every else ch[-1:]):
-                title = nm if len(ch) == 1 else (f"{nm} · {'first answer' if r['level'] == 0 else f'after check {r['level']}'}" if every else f"{nm} (final)")
-                P = {score.canon(c.get("location", ""), lab): c.get("description", "") for c in r["pred"]}
-                L = {score.canon(c.get("location", ""), lab): c.get("location", "") for c in r["pred"]}
-                cols[title] = (P, L, r)
-
-        table = []
-        for e, c in key_items:
-            row = {"Location": e["location"],
-                   "Golden standard": ("MATERIAL change" if e["expected"] else "NOT material (should be ignored)") + f" · {e['tier']}",
-                   "What actually changed": f"{e['old']} → {e['new']}"}
-            for title, (P, L, r) in cols.items():
-                hit = c in P
-                txt = ("✅ Found" if hit else "❌ Missed") if e["expected"] else ("⚠️ False alarm" if hit else "✅ Ignored")
-                row[title] = txt + (f" — {P[c]}" if detail and hit and P[c] else "")
-            table.append(row)
-        extras = {}
-        for title, (P, L, r) in cols.items():
-            for c, loc in L.items():
-                if c not in key_canon:
-                    extras.setdefault(c, loc)
-        for c, loc in extras.items():
-            row = {"Location": loc, "Golden standard": "Not a change in the answer key", "What actually changed": "—"}
-            for title, (P, L, r) in cols.items():
-                row[title] = ("⚠️ False alarm" + (f" — {P[c]}" if detail and P.get(c) else "")) if c in P else "—"
-            table.append(row)
-        n_exp = sum(e["expected"] for e in case["key"])
-        for lbl, fn in [("SCORE · real changes found", lambda s: f"{s['tp']}/{n_exp}"),
-                        ("SCORE · false alarms", lambda s: str(s["fp"])),
-                        ("SCORE · F1", lambda s: f"{score.prf(s['tp'], s['fp'], s['fn'])[2]:.2f}")]:
-            row = {"Location": lbl, "Golden standard": f"{n_exp} real changes", "What actually changed": ""}
-            for title, (P, L, r) in cols.items():
-                row[title] = fn(r["s"])
-            table.append(row)
-        if cols:
-            sbs = pd.DataFrame(table)
-
-            def color(v):
-                v = str(v)
-                return ("color: #1b7f3b; font-weight: 600" if v.startswith("✅") else
-                        "color: #c0392b; font-weight: 600" if v.startswith("❌") else
-                        "color: #b9770e; font-weight: 600" if v.startswith("⚠️") else "")
-            st.dataframe(sbs.style.map(color, subset=list(cols)), width="stretch", hide_index=True, height=min(900, 38 * (len(sbs) + 1)))
-            st.caption("✅ Found / Ignored = correct · ❌ Missed = real change not flagged · ⚠️ False alarm = flagged something that is not a real change. "
-                       f"Showing {case_id}, bias test '{pr}', repeat {run_id + 1} for AI methods (deterministic methods run once).")
-            st.download_button("Download this table (CSV)", sbs.to_csv(index=False), file_name=f"{case_id}_{pr}_side_by_side.csv")
+        methods, comps = get_summary(path, mtime, probe, level)
+        if not methods:
+            st.info("No results for this condition yet.", icon=":material/info:")
         else:
-            st.info("Pick at least one method.")
+            names = vm.unique_names(methods)
+            n_cases = max(m["cases"] for m in methods)
+            text = vm.headline(methods, names, comps, n_cases)
 
-        st.markdown("##### 1 · Ground truth (answer key)")
-        st.dataframe(pd.DataFrame(case["key"])[["location", "tier", "expected", "old", "new"]], width="stretch", hide_index=True)
-
-        base_name = arm_label.split(" @ ")[0]
-        if base_name in ("B_llm", "C_llm_plus_rules"):
-            with st.expander("What the judge model was asked (exact prompt)"):
-                ta, tb, swap = probes.apply(pr, case["text_a"], case["text_b"], seed=case["seed"])
-                s, u = prompts.judge(ta, tb, swap, base_name == "C_llm_plus_rules")
-                st.caption("System prompt"); st.code(s, language="text")
-                st.caption("User message (both policy versions)"); st.code(u, language="text", height=300)
-
-        st.markdown("##### 2 · Step by step")
-        prev = None
-        for r in chain:
-            s = r["s"]
-            title = ("Initial answer" if r["level"] == 0 else f"After AI verification pass {r['level']}") \
-                if len(chain) > 1 else "Result"
             with st.container(border=True):
-                st.markdown(f"**{title}** — F1 {r['f1']:.2f} · found {s['tp']} real · missed {s['fn']} · false alarms {s['fp']} "
-                            f"(of which cosmetic {s['cos_fp']})")
-                if prev is not None:
-                    gained, lost = s["TP"] - prev["s"]["TP"], prev["s"]["TP"] - s["TP"]
-                    fp_add, fp_rm = s["FP"] - prev["s"]["FP"], prev["s"]["FP"] - s["FP"]
-                    msg = []
-                    if gained: msg.append(f"✅ now finds: {', '.join(sorted(gained))}")
-                    if lost: msg.append(f"❌ dropped real change(s): {', '.join(sorted(lost))}")
-                    if fp_rm: msg.append(f"🧹 removed false alarm(s): {', '.join(sorted(fp_rm))}")
-                    if fp_add: msg.append(f"⚠️ added false alarm(s): {', '.join(sorted(fp_add))}")
-                    st.write("  \n".join(msg) if msg else "No change vs previous step.")
-                ex = pd.DataFrame(score.explain(r["pred"], case))
-                if not ex.empty:
-                    st.dataframe(ex.style.map(lambda v: f"color: {STATUS_COLOR.get(v, 'inherit')}; font-weight: 600", subset=["status"]),
-                                 width="stretch", hide_index=True)
-                for c in r.get("calls", []):
-                    with st.expander(f"Model call · `{c['model']}` · {c['tin']} in / {c['tout']} out tokens · {c['latency']}s"
-                                     + ("" if c["parse_ok"] else " · ⚠️ UNPARSEABLE REPLY")):
-                        st.code(c["text"], language="json")
-                if r["level"] == 0 and base_name in ("A_rules", "D1_llm_written_rules", "D2_llm_written_rules", "D3_llm_written_rules"):
-                    st.caption("Rule triggers: " + "; ".join(f"{p.get('location')}: {p.get('description')}" for p in r["pred"]))
-            prev = r
-        last = chain[-1]
-        st.caption(f"Chain total: {last['tin']} input + {last['tout']} output tokens, {last['latency']}s model time.")
+                st.markdown("#### How the methods compare")
+                st.markdown(text)
+                if n_cases < 20:
+                    st.badge(f"Early indication: only {n_cases} case(s) tested", icon=":material/hourglass_top:", color="orange")
+                else:
+                    st.badge(f"Based on {n_cases} test cases", icon=":material/verified:", color="green")
+                if not mock:
+                    st.caption("The policies are synthetic, so this describes how the methods behave on this test design, not on real portfolios.")
 
-        st.markdown("##### 3 · Compare methods on this same case")
-        cmp = {}
-        for r in rows:
-            if r["case"] == case_id and r["probe"] == pr:
-                cmp.setdefault((r["arm"], r["verifier"], r["run"]), []).append(r)
-        table = []
-        for (a, v, rn), lst in cmp.items():
-            L = max(lst, key=lambda x: x["level"])
-            table.append(dict(method=a, verifier=v, run=rn + 1, F1=L["f1"], found=L["s"]["tp"], missed=L["s"]["fn"],
-                              false_alarms=L["s"]["fp"], tokens=L["tin"] + L["tout"]))
-        st.dataframe(pd.DataFrame(table).sort_values(["method", "run"]), width="stretch", hide_index=True,
-                     column_config={"F1": st.column_config.ProgressColumn("F1", min_value=0, max_value=1, format="%.2f")})
+            n_err = sum(1 for _ in open(err_file(mock))) if err_file(mock).exists() else 0
+            bad_parse = sum(1 for r in rows for c in r.get("calls", []) if not c["parse_ok"])
+            if n_err:
+                st.warning(f"{n_err} item(s) failed and are missing from these scores. Start the test again from the Run tab to retry them.",
+                           icon=":material/warning:")
+            if bad_parse:
+                st.warning(f"{bad_parse} AI reply(ies) could not be read and were counted as 'no change found', which lowers that AI's score.",
+                           icon=":material/warning:")
 
-# ======================= Browse cases tab =======================
+            st.markdown("#### Scoreboard")
+            st.caption("Share of the real changes each method found, compared with the rules-only baseline.")
+            rules_found = next((m["found"] for m in methods if m["key"] == ("A_rules", "-")), None)
+            ncol = min(3, len(methods))
+            for i in range(0, len(methods), ncol):
+                cols = st.columns(ncol)
+                for col, m in zip(cols, methods[i:i + ncol]):
+                    c = comps.get(m["key"])
+                    with col.container(border=True):
+                        if rules_found is not None and m["key"] != ("A_rules", "-"):
+                            delta, dcolor = f"{(m['found'] - rules_found) * 100:+.0f} points vs rules only", "normal"
+                        elif rules_found is not None:
+                            delta, dcolor = "baseline", "off"
+                        else:
+                            delta, dcolor = None, "normal"
+                        st.metric(names[m["key"]], vm.pct(m["found"]), delta, delta_color=dcolor,
+                                  help="Share of the real changes this method found.")
+                        label, color = vm.VERDICT_TEXT[c["verdict"]] if c else ("The baseline", "blue")
+                        st.badge(label, color=color)
+                        st.caption(f"Flags that were correct: **{vm.pct(m['correct'])}**  \n"
+                                   f"Harmless edits wrongly flagged: **{vm.pct(m['cosmetic'])}**  \n"
+                                   f"Same answer every attempt: **{vm.pct(m['consistency'])}**" if m["consistency"] is not None else
+                                   f"Flags that were correct: **{vm.pct(m['correct'])}**  \n"
+                                   f"Harmless edits wrongly flagged: **{vm.pct(m['cosmetic'])}**")
+
+            chart = pd.DataFrame({"Real changes found": [100 * m["found"] for m in methods],
+                                  "Flags that were correct": [100 * m["correct"] for m in methods]},
+                                 index=[names[m["key"]] for m in methods])
+            st.bar_chart(chart, horizontal=True, y_label="Percent", x_label="")
+
+            st.markdown("#### Where does each method struggle?")
+            st.caption("Real changes found, split by how hard they are to spot. Methods often differ most on the 'Hard' changes, "
+                       "but each column can favour a different method.")
+            tier_df = pd.DataFrame(
+                [{"Method": names[m["key"]], **{vm.TIER_NAMES[t]: (None if v is None else 100 * v) for t, v in m["tiers"].items()}} for m in methods])
+            st.dataframe(tier_df, hide_index=True, width="stretch",
+                         column_config={vm.TIER_NAMES[t]: pct_col(vm.TIER_NAMES[t]) for t in vm.TIER_NAMES})
+
+            dc = vm.double_check_effect(rows, probe)
+            if dc:
+                st.markdown("#### Does having a second AI double-check help?")
+                dcdf = pd.DataFrame([{"Method": names.get(d["key"], vm.pretty_arm(d["key"][0])),
+                                      "First answer": 100 * d["first"]["f1"], "After double-checking": 100 * d["final"]["f1"],
+                                      "Change (points)": round(100 * (d["final"]["f1"] - d["first"]["f1"]))} for d in dc])
+                st.dataframe(dcdf, hide_index=True, width="stretch", column_config={
+                    "First answer": pct_col("First answer (overall score)"), "After double-checking": pct_col("After double-checking (overall score)")})
+                st.caption("Overall score combines how many real changes were found with how many flags were correct. "
+                           "A negative change means the extra check made the answer worse.")
+
+            trap = dict(parse_md_tables(md)).get("4. Bias probes: change vs probe=none (same arm / verifier / passes)")
+            if trap is not None and len(trap):
+                st.markdown("#### Can the AI be misled?")
+                st.caption("How often a misleading addition changed the AI's answer, compared with how much its answers vary anyway between attempts.")
+                t = trap.sort_values("passes").groupby(["arm", "verifier", "probe"], as_index=False).last()
+                fr_s, bf_s = pd.to_numeric(t["flip rate"], errors="coerce"), pd.to_numeric(t["baseline flip"], errors="coerce")
+                tdf = pd.DataFrame({"Method": [vm.pretty_arm(a) for a in t["arm"]],
+                                    "Trap": [vm.PROBE_NAMES.get(p, p) for p in t["probe"]],
+                                    "Answer changed": 100 * fr_s, "Normal variation": 100 * bf_s,
+                                    "Misled?": ["Can't tell (needs 2+ attempts)" if bf != bf else "Yes, likely" if fr > bf + 0.05 else "No"
+                                                for fr, bf in zip(fr_s, bf_s)]})
+                st.dataframe(tdf, hide_index=True, width="stretch", column_config={
+                    "Answer changed": pct_col("Answer changed by the trap"), "Normal variation": pct_col("Changes anyway between attempts")})
+
+            st.download_button("Download a one-page summary", vm.summary_markdown(methods, names, comps, n_cases, text),
+                               file_name="benchmark_summary.md", icon=":material/download:",
+                               help="Review and validate before sharing outside the team.")
+
+            with st.expander("For analysts: full statistics", icon=":material/query_stats:"):
+                st.caption("Precision, recall, F1, confidence intervals, consistency and verification effects exactly as computed.")
+                for title, df in tables:
+                    with st.expander(title):
+                        st.dataframe(df, hide_index=True, width="stretch")
+                st.download_button("Download full report (markdown)", md, file_name="report.md", icon=":material/download:")
+
+# ============================================================ CASE EXPLORER
 with tab_cases:
-    files = case_files()
+    files = vm.case_files()
     if not files:
-        st.info("No cases generated.")
+        st.info("No test cases yet.", icon=":material/info:")
     else:
-        pick = st.selectbox("Case", files, format_func=lambda f: os.path.basename(f)[:-5], key="browse")
-        case = json.load(open(pick))
-        st.subheader("Answer key (what really changed)")
-        st.dataframe(pd.DataFrame(case["key"]), width="stretch", hide_index=True)
-        a, b = st.columns(2)
-        a.text_area("Original", case["text_a"], height=400)
-        b.text_area("Renewal", case["text_b"], height=400)
+        ids = [os.path.basename(f)[:-5] for f in files]
+        rows, cases = (load_rows(str(runs_file(mock)), runs_file(mock).stat().st_mtime) if has_results(mock) else ([], {}))
+        sel1, sel2, sel3 = st.columns(3)
+        case_id = sel1.selectbox("Test case", ids, format_func=lambda i: f"Case {i.split('_')[1]}")
+        case = json.load(open(files[ids.index(case_id)]))
+        have = sorted({r["probe"] for r in rows if r["case"] == case_id}, key=lambda p: probes.PROBES.index(p) if p in probes.PROBES else 99)
 
-# ======================= Help tab =======================
+        n_real = sum(e["expected"] for e in case["key"])
+        st.caption(f"This case contains **{n_real} real changes** and **{len(case['key']) - n_real} harmless edits** "
+                   "(rewording or formatting that should be ignored). That list is the answer key.")
+
+        if not have:
+            st.info("No results for this case yet. Run a test first to compare the methods here.", icon=":material/info:")
+        else:
+            pr = sel2.selectbox("Condition", have, index=have.index("none") if "none" in have else 0,
+                                format_func=lambda p: vm.PROBE_NAMES.get(p, p))
+            runs_here = sorted({r["run"] for r in rows if r["case"] == case_id and r["probe"] == pr})
+            run_id = sel3.selectbox("Attempt (for AI methods)", runs_here, format_func=lambda i: f"Attempt {i + 1}",
+                                    disabled=len(runs_here) < 2, help="AI answers can differ from attempt to attempt.")
+            combos = sorted({(r["arm"], r["verifier"]) for r in rows if r["case"] == case_id and r["probe"] == pr})
+            nm = vm.unique_names([dict(key=k, arm=k[0]) for k in combos])
+            chosen = st.pills("Methods to compare", combos, selection_mode="multi", default=combos, format_func=lambda k: nm[k])
+            t1, t2, t3 = st.columns(3)
+            only_issues = t1.toggle("Only show mistakes", value=True, help="Hide items every selected method got right.")
+            every = t2.toggle("Show each double-check step", value=False)
+            detail = t3.toggle("Show what each method said", value=False)
+
+            if chosen:
+                table, mcols = vm.side_by_side(rows, case, pr, [(k[0], k[1], nm[k]) for k in chosen], run_id, every, detail, only_issues)
+                df = pd.DataFrame(table)
+                if only_issues and len(df) == 3:
+                    st.success("None of the selected methods made a mistake on this case.", icon=":material/check_circle:")
+                st.dataframe(df.style.map(mark_color, subset=mcols), hide_index=True, width="stretch",
+                             height=min(900, 38 * (len(df) + 1)))
+                st.caption(f"{vm.OK_MARK} correct   {vm.MISS_MARK} missed a real change   {vm.FALSE_MARK} flagged something that is not a real change. "
+                           "'Rules only' and other rule-based methods run once; AI methods show the selected attempt.")
+                st.download_button("Download this table (CSV)", df.to_csv(index=False), file_name=f"{case_id}_comparison.csv",
+                                   icon=":material/download:")
+            else:
+                st.info("Pick at least one method.", icon=":material/info:")
+
+            with st.expander("Step by step: how one method reached its answer", icon=":material/timeline:"):
+                lab = sorted({r["arm"] for r in rows if r["case"] == case_id and r["probe"] == pr})
+                arm_label = st.selectbox("Method", lab, format_func=vm.pretty_arm)
+                cand = [r for r in rows if r["case"] == case_id and r["arm"] == arm_label and r["probe"] == pr]
+                rid = st.selectbox("Attempt", sorted({r["run"] for r in cand}), format_func=lambda i: f"Attempt {i + 1}", key="step_run")
+                chain = sorted([r for r in cand if r["run"] == rid], key=lambda r: r["level"])
+                base_name = arm_label.split(" @ ")[0]
+                if base_name in ("B_llm", "C_llm_plus_rules"):
+                    ta, tb, swap = probes.apply(pr, case["text_a"], case["text_b"], seed=case["seed"])
+                    s_, u_ = prompts.judge(ta, tb, swap, base_name == "C_llm_plus_rules")
+                    st.caption("The exact instructions the AI received:")
+                    st.code(s_, language="text")
+                prev = None
+                for r in chain:
+                    s = r["s"]
+                    title = ("First answer" if r["level"] == 0 else f"After AI double-check {r['level']}") if len(chain) > 1 else "Result"
+                    with st.container(border=True):
+                        st.markdown(f"**{title}**: found {s['tp']} real change(s), missed {s['fn']}, wrongly flagged {s['fp']}.")
+                        if prev is not None:
+                            gained, lost = s["TP"] - prev["s"]["TP"], prev["s"]["TP"] - s["TP"]
+                            fa, fr = s["FP"] - prev["s"]["FP"], prev["s"]["FP"] - s["FP"]
+                            msg = ([f"Now finds: {', '.join(sorted(gained))}"] if gained else []) + \
+                                  ([f"Dropped real change(s): {', '.join(sorted(lost))}"] if lost else []) + \
+                                  ([f"Removed wrong flag(s): {', '.join(sorted(fr))}"] if fr else []) + \
+                                  ([f"Added wrong flag(s): {', '.join(sorted(fa))}"] if fa else [])
+                            st.caption(" · ".join(msg) if msg else "No change from the previous step.")
+                        ex = pd.DataFrame(score.explain(r["pred"], case)).rename(columns={
+                            "status": "Result", "location": "Item", "tier": "Difficulty", "truth": "Answer key", "model_said": "Method said"})
+                        if not ex.empty:
+                            ex["Result"] = ex["Result"].map({"HIT": f"{vm.OK_MARK} Found", "MISSED": f"{vm.MISS_MARK} Missed",
+                                                             "FALSE ALARM": f"{vm.FALSE_MARK} Wrongly flagged",
+                                                             "COSMETIC FALSE ALARM": f"{vm.FALSE_MARK} Wrongly flagged (harmless edit)"})
+                            st.dataframe(ex.style.map(mark_color, subset=["Result"]), hide_index=True, width="stretch")
+                        for c in r.get("calls", []):
+                            with st.expander(f"Raw AI reply · {vm.short_model(c['model'])} · {c['tin']} in / {c['tout']} out tokens · {c['latency']}s"
+                                             + ("" if c["parse_ok"] else " · COULD NOT BE READ")):
+                                st.code(c["text"], language="json")
+                    prev = r
+
+        with st.expander("The answer key and the two documents", icon=":material/description:"):
+            key_df = pd.DataFrame(case["key"]).rename(columns={"location": "Item", "tier": "Difficulty", "expected": "Should be flagged?",
+                                                              "old": "Before", "new": "After"})[["Item", "Should be flagged?", "Difficulty", "Before", "After"]]
+            st.dataframe(key_df, hide_index=True, width="stretch")
+            d1, d2 = st.columns(2)
+            d1.text_area("Original policy", case["text_a"], height=380)
+            d2.text_area("Renewal policy", case["text_b"], height=380)
+
+# ============================================================ HELP
 with tab_help:
     st.markdown("""
-**Workflow**
-1. **Run** — choose methods (include `A_rules` as the deterministic baseline), one or more Claude models, and a small case count. Use *Test connection* first.
-2. **Scores** — precision / recall / F1 per method *and per model*, per-tier recall, and the statistical comparison against the rules.
-3. **Process breakdown** — pick any case + method + model and see exactly what it flagged, what it missed, how each AI check pass changed the answer, and the raw model replies.
+### In one sentence
+We measure how AI models compare with a fixed set of if-then rules at spotting the changes that matter between two versions of a car insurance policy. There is no assumed winner: the aim is to see where each approach is strong or weak.
 
-**How results are kept trustworthy**
-- Every AI result is stored with the judge and verifier model that produced it; switching models never reuses another model's results.
-- A chain is saved only if every step finished. Failures are logged (Scores → Data health) and are never silently scored as zero.
-- Answer keys are generated by the mutation script, not by an AI. `python -m tests.test_pipeline` checks the scorer (a perfect answer scores 1.0, an empty one 0) and the multi-model bookkeeping.
-- Demo-mode results are kept in separate files and are meaningless.
+### How the test works
+1. **We build tests where we know the answer.** A script creates a policy, then a renewal copy with deliberate edits. Some are **real changes** (a limit, a deadline, a removed exclusion). Others are **harmless** (reworded text, different date or currency formatting). Because the script made every edit, it knows the exact answer. No AI or person marks the answers.
+2. **Different methods try to find the real changes.** *Rules only* follows fixed rules. *AI only* asks an AI model. *AI guided by rules* gives the AI the rules too. *Rules + AI together* lets rules handle the obvious fields and the AI judge reworded clauses.
+3. **A second AI can double-check** the first answer, so we can see whether extra checking helps or hurts.
+4. **Every answer is scored against the answer key.**
+5. **Trap tests** add misleading text (for example, a fake 'Compliance approved' note) to see whether the AI is swayed by something irrelevant.
 
-**Reading the numbers**
-- **Recall** – share of real material changes found. **Precision** – share of flagged items that were real.
-- **Cosmetic false-alarm rate** – wording/format-only edits wrongly flagged.
-- **Semantic recall** – changes with no lexical tell; the key test for AI vs rules.
-- **Consistency** – similarity of answers across repeats. **Flip rate** – how often a bias probe changes the answer vs normal noise.
+### How to read the results
+| Term | Plain meaning |
+|---|---|
+| **Real changes found** | Of the changes that truly matter, how many did the method catch? |
+| **Flags that were correct** | Of everything it flagged, how much was a real change? |
+| **Harmless edits wrongly flagged** | How often it raised an alarm over rewording or formatting. |
+| **Hard changes** | The meaning changed but there is no obvious word or number to spot. A good place to see where methods differ. |
+| **No reliable difference** | The gap between two methods could be down to chance. Run more cases to settle it. |
+| **Same answer every attempt** | Whether the method gives consistent answers when asked again. |
 
-Review and validate results before sharing outside the team.
+### Good to know
+- The policies are **synthetic**. Results show how the methods behave on this test design, not how they would perform on real portfolios.
+- **Practice mode** uses fake AI answers and is only for learning the app.
+- Results are saved with the exact AI model used, so you can switch models and compare them safely.
+- AI-assisted analysis: **review and validate results before sharing them outside the team.**
 """)
